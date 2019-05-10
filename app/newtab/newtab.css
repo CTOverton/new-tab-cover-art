@@ -1,0 +1,16 @@
+.cover-art {
+    width: 74vmin;
+    height: 74vmin;
+    margin: calc(50vh - 37vmin) calc(50vw - 37vmin);
+    background: center / contain no-repeat url("../assets/test_album.jpg");
+}
+
+.content {
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    margin: 25px 0;
+}

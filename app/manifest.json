@@ -1,0 +1,38 @@
+{
+  "manifest_version": 2,
+
+  "name": "Spotify Discovery Theme",
+  "version": "0.1.0",
+  "description": "New tab displays discovery album art",
+
+  "browser_action": {
+    "default_title": "Spotify Discovery Theme"
+  },
+
+  "chrome_url_overrides" : {
+    "newtab": "newtab/newtab.html"
+  },
+
+  "permissions": [
+    "identity",
+    "tabs",
+    "webNavigation",
+    "https://*.spotify.com/*",
+    "*://*.google.com/*",
+    "storage",
+    "alarms"
+  ],
+
+  "web_accessible_resources": [
+    "/oauth2/*"
+  ],
+
+  "browser_action": {
+    "default_popup": "popup/popup.html",
+    "default_title": "Spotify Crop"
+  },
+
+  "background": {
+    "page": "background/background.html"
+  }
+}
