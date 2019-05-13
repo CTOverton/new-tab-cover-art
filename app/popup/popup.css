@@ -3,6 +3,24 @@ body {
     font-family: Circular,Helvetica,Arial,sans-serif;
 }
 
+#login_info {
+    cursor: pointer;
+}
+
+.name {
+    font-size: 14px;
+    line-height: 1;
+    font-weight: 700;
+    color: #616467;
+}
+
+.email {
+    font-size: 12px;
+    line-height: 2;
+    font-weight: 700;
+    color: #777a7d;
+}
+
 .bttn {
     /*btn-block*/
     /*display: block;*/
