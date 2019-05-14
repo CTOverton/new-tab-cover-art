@@ -7,12 +7,6 @@ let spotifyApi = {
 // Message Passing
 chrome.runtime.onMessage.addListener(
     function (request, sender, sendResponse) {
-        if (request.action === 'checkLogin') {
-            checkLogin()
-                .then(function (result) {
-                    sendResponse(result);
-                });
-        }
         if (request.action === 'getLogin') {
             getLogin()
                 .then(function (result) {
@@ -38,16 +32,6 @@ chrome.runtime.onMessage.addListener(
 
 function launchAuthFlow() {
     api.getAuthCode();
-}
-
-function checkLogin() {
-    return getLogin()
-        .then(function (result) {
-            return true;
-        }, function (err) {
-            console.log('checkLogin Error: ', err);
-            return false;
-        })
 }
 
 function getLogin() {
@@ -78,7 +62,7 @@ function setLogin(auth) {
             Object.assign(login, result); // Merges user info into login object
             chrome.storage.sync.set({login: login}, function () {
                 console.log('Login set to: ', login);
-                chrome.runtime.sendMessage({action: 'updateDisplay'});
+                chrome.runtime.sendMessage({action: 'displayCurrentUser'});
             });
         }, function (err) {
             console.log(err);
@@ -89,7 +73,7 @@ function checkToken() {
     return new Promise(function (resolve, reject) {
         getLogin()
             .then(function (result) {
-                if (checkExpired(result.auth.expiration)) {
+                if (isExpired(result.auth.expiration)) {
                     // Token has expired, use refresh token
                     resolve({refresh: true, auth: result.auth});
                 } else {
@@ -103,7 +87,7 @@ function checkToken() {
     });
 }
 
-function checkExpired(unixTimeVal) {
+function isExpired(unixTimeVal) {
     return unixTimeVal < moment().valueOf();
 }
 

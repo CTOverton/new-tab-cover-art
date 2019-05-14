@@ -652,7 +652,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
   function getSelectMultiple_(el) {
     var values = [];
-    each(el.popup, function (o) {
+    each(el.options, function (o) {
       if (o.selected) {
         values.push(o.value);
       }
@@ -662,7 +662,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
   function getSelectSingle_(el) {
     var selectedIndex = el.selectedIndex;
-    return selectedIndex >= 0 ? el.popup[selectedIndex].value : null;
+    return selectedIndex >= 0 ? el.options[selectedIndex].value : null;
   }
 
   function getValue(el) {
@@ -1938,7 +1938,7 @@ $jscomp.polyfill = function (e, r, p, m) {
 
       // Open first active
       var $activeBodies = _this3.$el.children('li.active').children('.collapsible-body');
-      if (_this3.popup.accordion) {
+      if (_this3.options.accordion) {
         // Handle Accordion
         $activeBodies.first().css('display', 'block');
       } else {
@@ -2067,7 +2067,7 @@ $jscomp.polyfill = function (e, r, p, m) {
             height: finalHeight,
             paddingTop: pTop,
             paddingBottom: pBottom,
-            duration: this.popup.inDuration,
+            duration: this.options.inDuration,
             easing: 'easeInOutCubic',
             complete: function (anim) {
               $body.css({
@@ -2078,8 +2078,8 @@ $jscomp.polyfill = function (e, r, p, m) {
               });
 
               // onOpenEnd callback
-              if (typeof _this6.popup.onOpenEnd === 'function') {
-                _this6.popup.onOpenEnd.call(_this6, $collapsibleLi[0]);
+              if (typeof _this6.options.onOpenEnd === 'function') {
+                _this6.options.onOpenEnd.call(_this6, $collapsibleLi[0]);
               }
             }
           });
@@ -2106,7 +2106,7 @@ $jscomp.polyfill = function (e, r, p, m) {
             height: 0,
             paddingTop: 0,
             paddingBottom: 0,
-            duration: this.popup.outDuration,
+            duration: this.options.outDuration,
             easing: 'easeInOutCubic',
             complete: function () {
               $body.css({
@@ -2117,8 +2117,8 @@ $jscomp.polyfill = function (e, r, p, m) {
               });
 
               // onCloseEnd callback
-              if (typeof _this7.popup.onCloseEnd === 'function') {
-                _this7.popup.onCloseEnd.call(_this7, $collapsibleLi[0]);
+              if (typeof _this7.options.onCloseEnd === 'function') {
+                _this7.options.onCloseEnd.call(_this7, $collapsibleLi[0]);
               }
             }
           });
@@ -2138,12 +2138,12 @@ $jscomp.polyfill = function (e, r, p, m) {
         var $collapsibleLi = this.$el.children('li').eq(index);
         if ($collapsibleLi.length && !$collapsibleLi[0].classList.contains('active')) {
           // onOpenStart callback
-          if (typeof this.popup.onOpenStart === 'function') {
-            this.popup.onOpenStart.call(this, $collapsibleLi[0]);
+          if (typeof this.options.onOpenStart === 'function') {
+            this.options.onOpenStart.call(this, $collapsibleLi[0]);
           }
 
           // Handle accordion behavior
-          if (this.popup.accordion) {
+          if (this.options.accordion) {
             var $collapsibleLis = this.$el.children('li');
             var $activeLis = this.$el.children('li.active');
             $activeLis.each(function (el) {
@@ -2169,8 +2169,8 @@ $jscomp.polyfill = function (e, r, p, m) {
         var $collapsibleLi = this.$el.children('li').eq(index);
         if ($collapsibleLi.length && $collapsibleLi[0].classList.contains('active')) {
           // onCloseStart callback
-          if (typeof this.popup.onCloseStart === 'function') {
-            this.popup.onCloseStart.call(this, $collapsibleLi[0]);
+          if (typeof this.options.onCloseStart === 'function') {
+            this.options.onCloseStart.call(this, $collapsibleLi[0]);
           }
 
           // Animate out
@@ -2290,8 +2290,8 @@ $jscomp.polyfill = function (e, r, p, m) {
       _this9.filterQuery = [];
 
       // Move dropdown-content after dropdown-trigger
-      if (!!_this9.popup.container) {
-        $(_this9.popup.container).append(_this9.dropdownEl);
+      if (!!_this9.options.container) {
+        $(_this9.options.container).append(_this9.dropdownEl);
       } else {
         _this9.$el.after(_this9.dropdownEl);
       }
@@ -2335,7 +2335,7 @@ $jscomp.polyfill = function (e, r, p, m) {
         this.dropdownEl.addEventListener('click', this._handleDropdownClickBound);
 
         // Hover event handlers
-        if (this.popup.hover) {
+        if (this.options.hover) {
           this._handleMouseEnterBound = this._handleMouseEnter.bind(this);
           this.el.addEventListener('mouseenter', this._handleMouseEnterBound);
           this._handleMouseLeaveBound = this._handleMouseLeave.bind(this);
@@ -2359,7 +2359,7 @@ $jscomp.polyfill = function (e, r, p, m) {
         this.el.removeEventListener('keydown', this._handleTriggerKeydownBound);
         this.dropdownEl.removeEventListener('click', this._handleDropdownClickBound);
 
-        if (this.popup.hover) {
+        if (this.options.hover) {
           this.el.removeEventListener('mouseenter', this._handleMouseEnterBound);
           this.el.removeEventListener('mouseleave', this._handleMouseLeaveBound);
           this.dropdownEl.removeEventListener('mouseleave', this._handleMouseLeaveBound);
@@ -2419,7 +2419,7 @@ $jscomp.polyfill = function (e, r, p, m) {
         var _this10 = this;
 
         var $target = $(e.target);
-        if (this.popup.closeOnClick && $target.closest('.dropdown-content').length && !this.isTouchMoving) {
+        if (this.options.closeOnClick && $target.closest('.dropdown-content').length && !this.isTouchMoving) {
           // isTouchMoving to check if scrolling on mobile.
           setTimeout(function () {
             _this10.close();
@@ -2464,9 +2464,9 @@ $jscomp.polyfill = function (e, r, p, m) {
       key: "_handleDropdownClick",
       value: function _handleDropdownClick(e) {
         // onItemClick callback
-        if (typeof this.popup.onItemClick === 'function') {
+        if (typeof this.options.onItemClick === 'function') {
           var itemEl = $(e.target).closest('li')[0];
-          this.popup.onItemClick.call(this, itemEl);
+          this.options.onItemClick.call(this, itemEl);
         }
       }
 
@@ -2580,7 +2580,7 @@ $jscomp.polyfill = function (e, r, p, m) {
     }, {
       key: "_focusFocusedItem",
       value: function _focusFocusedItem() {
-        if (this.focusedIndex >= 0 && this.focusedIndex < this.dropdownEl.children.length && this.popup.autoFocus) {
+        if (this.focusedIndex >= 0 && this.focusedIndex < this.dropdownEl.children.length && this.options.autoFocus) {
           this.dropdownEl.children[this.focusedIndex].focus();
         }
       }
@@ -2606,11 +2606,11 @@ $jscomp.polyfill = function (e, r, p, m) {
         // Countainer here will be closest ancestor with overflow: hidden
         var closestOverflowParent = !!this.dropdownEl.offsetParent ? this.dropdownEl.offsetParent : this.dropdownEl.parentNode;
 
-        var alignments = M.checkPossibleAlignments(this.el, closestOverflowParent, dropdownBounds, this.popup.coverTrigger ? 0 : triggerBRect.height);
+        var alignments = M.checkPossibleAlignments(this.el, closestOverflowParent, dropdownBounds, this.options.coverTrigger ? 0 : triggerBRect.height);
 
         var verticalAlignment = 'top';
-        var horizontalAlignment = this.popup.alignment;
-        idealYPos += this.popup.coverTrigger ? 0 : triggerBRect.height;
+        var horizontalAlignment = this.options.alignment;
+        idealYPos += this.options.coverTrigger ? 0 : triggerBRect.height;
 
         // Reset isScrollable
         this.isScrollable = false;
@@ -2651,7 +2651,7 @@ $jscomp.polyfill = function (e, r, p, m) {
         }
 
         if (verticalAlignment === 'bottom') {
-          idealYPos = idealYPos - dropdownBRect.height + (this.popup.coverTrigger ? triggerBRect.height : 0);
+          idealYPos = idealYPos - dropdownBRect.height + (this.options.coverTrigger ? triggerBRect.height : 0);
         }
         if (horizontalAlignment === 'right') {
           idealXPos = idealXPos - dropdownBRect.width + triggerBRect.width;
@@ -2684,16 +2684,16 @@ $jscomp.polyfill = function (e, r, p, m) {
           },
           scaleX: [0.3, 1],
           scaleY: [0.3, 1],
-          duration: this.popup.inDuration,
+          duration: this.options.inDuration,
           easing: 'easeOutQuint',
           complete: function (anim) {
-            if (_this11.popup.autoFocus) {
+            if (_this11.options.autoFocus) {
               _this11.dropdownEl.focus();
             }
 
             // onOpenEnd callback
-            if (typeof _this11.popup.onOpenEnd === 'function') {
-              _this11.popup.onOpenEnd.call(_this11, _this11.el);
+            if (typeof _this11.options.onOpenEnd === 'function') {
+              _this11.options.onOpenEnd.call(_this11, _this11.el);
             }
           }
         });
@@ -2717,14 +2717,14 @@ $jscomp.polyfill = function (e, r, p, m) {
           },
           scaleX: 0.3,
           scaleY: 0.3,
-          duration: this.popup.outDuration,
+          duration: this.options.outDuration,
           easing: 'easeOutQuint',
           complete: function (anim) {
             _this12._resetDropdownStyles();
 
             // onCloseEnd callback
-            if (typeof _this12.popup.onCloseEnd === 'function') {
-              _this12.popup.onCloseEnd.call(_this12, _this12.el);
+            if (typeof _this12.options.onCloseEnd === 'function') {
+              _this12.options.onCloseEnd.call(_this12, _this12.el);
             }
           }
         });
@@ -2738,7 +2738,7 @@ $jscomp.polyfill = function (e, r, p, m) {
       key: "_placeDropdown",
       value: function _placeDropdown() {
         // Set width before calculating positionInfo
-        var idealWidth = this.popup.constrainWidth ? this.el.getBoundingClientRect().width : this.dropdownEl.getBoundingClientRect().width;
+        var idealWidth = this.options.constrainWidth ? this.el.getBoundingClientRect().width : this.dropdownEl.getBoundingClientRect().width;
         this.dropdownEl.style.width = idealWidth + 'px';
 
         var positionInfo = this._getDropdownPosition();
@@ -2762,8 +2762,8 @@ $jscomp.polyfill = function (e, r, p, m) {
         this.isOpen = true;
 
         // onOpenStart callback
-        if (typeof this.popup.onOpenStart === 'function') {
-          this.popup.onOpenStart.call(this, this.el);
+        if (typeof this.options.onOpenStart === 'function') {
+          this.options.onOpenStart.call(this, this.el);
         }
 
         // Reset styles
@@ -2789,14 +2789,14 @@ $jscomp.polyfill = function (e, r, p, m) {
         this.focusedIndex = -1;
 
         // onCloseStart callback
-        if (typeof this.popup.onCloseStart === 'function') {
-          this.popup.onCloseStart.call(this, this.el);
+        if (typeof this.options.onCloseStart === 'function') {
+          this.options.onCloseStart.call(this, this.el);
         }
 
         this._animateOut();
         this._removeTemporaryEventHandlers();
 
-        if (this.popup.autoFocus) {
+        if (this.options.autoFocus) {
           this.el.focus();
         }
       }
@@ -3002,7 +3002,7 @@ $jscomp.polyfill = function (e, r, p, m) {
     }, {
       key: "_handleOverlayClick",
       value: function _handleOverlayClick() {
-        if (this.popup.dismissible) {
+        if (this.options.dismissible) {
           this.close();
         }
       }
@@ -3030,7 +3030,7 @@ $jscomp.polyfill = function (e, r, p, m) {
       key: "_handleKeydown",
       value: function _handleKeydown(e) {
         // ESC key
-        if (e.keyCode === 27 && this.popup.dismissible) {
+        if (e.keyCode === 27 && this.options.dismissible) {
           this.close();
         }
       }
@@ -3071,20 +3071,20 @@ $jscomp.polyfill = function (e, r, p, m) {
         // Animate overlay
         anim({
           targets: this.$overlay[0],
-          opacity: this.popup.opacity,
-          duration: this.popup.inDuration,
+          opacity: this.options.opacity,
+          duration: this.options.inDuration,
           easing: 'easeOutQuad'
         });
 
         // Define modal animation options
         var enterAnimOptions = {
           targets: this.el,
-          duration: this.popup.inDuration,
+          duration: this.options.inDuration,
           easing: 'easeOutCubic',
           // Handle modal onOpenEnd callback
           complete: function () {
-            if (typeof _this14.popup.onOpenEnd === 'function') {
-              _this14.popup.onOpenEnd.call(_this14, _this14.el, _this14._openingTrigger);
+            if (typeof _this14.options.onOpenEnd === 'function') {
+              _this14.options.onOpenEnd.call(_this14, _this14.el, _this14._openingTrigger);
             }
           }
         };
@@ -3100,7 +3100,7 @@ $jscomp.polyfill = function (e, r, p, m) {
           // Normal modal animation
         } else {
           $.extend(enterAnimOptions, {
-            top: [this.popup.startingTop, this.popup.endingTop],
+            top: [this.options.startingTop, this.options.endingTop],
             opacity: 1,
             scaleX: [0.8, 1],
             scaleY: [0.8, 1]
@@ -3122,14 +3122,14 @@ $jscomp.polyfill = function (e, r, p, m) {
         anim({
           targets: this.$overlay[0],
           opacity: 0,
-          duration: this.popup.outDuration,
+          duration: this.options.outDuration,
           easing: 'easeOutQuart'
         });
 
         // Define modal animation options
         var exitAnimOptions = {
           targets: this.el,
-          duration: this.popup.outDuration,
+          duration: this.options.outDuration,
           easing: 'easeOutCubic',
           // Handle modal ready callback
           complete: function () {
@@ -3137,8 +3137,8 @@ $jscomp.polyfill = function (e, r, p, m) {
             _this15.$overlay.remove();
 
             // Call onCloseEnd callback
-            if (typeof _this15.popup.onCloseEnd === 'function') {
-              _this15.popup.onCloseEnd.call(_this15, _this15.el);
+            if (typeof _this15.options.onCloseEnd === 'function') {
+              _this15.options.onCloseEnd.call(_this15, _this15.el);
             }
           }
         };
@@ -3154,7 +3154,7 @@ $jscomp.polyfill = function (e, r, p, m) {
           // Normal modal animation
         } else {
           $.extend(exitAnimOptions, {
-            top: [this.popup.endingTop, this.popup.startingTop],
+            top: [this.options.endingTop, this.options.startingTop],
             opacity: 0,
             scaleX: 0.8,
             scaleY: 0.8
@@ -3187,18 +3187,18 @@ $jscomp.polyfill = function (e, r, p, m) {
         this._openingTrigger = !!$trigger ? $trigger[0] : undefined;
 
         // onOpenStart callback
-        if (typeof this.popup.onOpenStart === 'function') {
-          this.popup.onOpenStart.call(this, this.el, this._openingTrigger);
+        if (typeof this.options.onOpenStart === 'function') {
+          this.options.onOpenStart.call(this, this.el, this._openingTrigger);
         }
 
-        if (this.popup.preventScrolling) {
+        if (this.options.preventScrolling) {
           document.body.style.overflow = 'hidden';
         }
 
         this.el.classList.add('open');
         this.el.insertAdjacentElement('afterend', this.$overlay[0]);
 
-        if (this.popup.dismissible) {
+        if (this.options.dismissible) {
           this._handleKeydownBound = this._handleKeydown.bind(this);
           this._handleFocusBound = this._handleFocus.bind(this);
           document.addEventListener('keydown', this._handleKeydownBound);
@@ -3231,8 +3231,8 @@ $jscomp.polyfill = function (e, r, p, m) {
         this._nthModalOpened = 0;
 
         // Call onCloseStart callback
-        if (typeof this.popup.onCloseStart === 'function') {
-          this.popup.onCloseStart.call(this, this.el);
+        if (typeof this.options.onCloseStart === 'function') {
+          this.options.onCloseStart.call(this, this.el);
         }
 
         this.el.classList.remove('open');
@@ -3242,7 +3242,7 @@ $jscomp.polyfill = function (e, r, p, m) {
           document.body.style.overflow = '';
         }
 
-        if (this.popup.dismissible) {
+        if (this.options.dismissible) {
           document.removeEventListener('keydown', this._handleKeydownBound);
           document.removeEventListener('focus', this._handleFocusBound, true);
         }
@@ -3489,14 +3489,14 @@ $jscomp.polyfill = function (e, r, p, m) {
           width: [this.originalWidth, this.newWidth],
           left: M.getDocumentScrollLeft() + this.windowWidth / 2 - this.placeholder.offset().left - this.newWidth / 2,
           top: M.getDocumentScrollTop() + this.windowHeight / 2 - this.placeholder.offset().top - this.newHeight / 2,
-          duration: this.popup.inDuration,
+          duration: this.options.inDuration,
           easing: 'easeOutQuad',
           complete: function () {
             _this17.doneAnimating = true;
 
             // onOpenEnd callback
-            if (typeof _this17.popup.onOpenEnd === 'function') {
-              _this17.popup.onOpenEnd.call(_this17, _this17.el);
+            if (typeof _this17.options.onOpenEnd === 'function') {
+              _this17.options.onOpenEnd.call(_this17, _this17.el);
             }
           }
         };
@@ -3529,7 +3529,7 @@ $jscomp.polyfill = function (e, r, p, m) {
           height: this.originalHeight,
           left: 0,
           top: 0,
-          duration: this.popup.outDuration,
+          duration: this.options.outDuration,
           easing: 'easeOutQuad',
           complete: function () {
             _this18.placeholder.css({
@@ -3561,8 +3561,8 @@ $jscomp.polyfill = function (e, r, p, m) {
             }
 
             // onCloseEnd callback
-            if (typeof _this18.popup.onCloseEnd === 'function') {
-              _this18.popup.onCloseEnd.call(_this18, _this18.el);
+            if (typeof _this18.options.onCloseEnd === 'function') {
+              _this18.options.onCloseEnd.call(_this18, _this18.el);
             }
           }
         };
@@ -3601,8 +3601,8 @@ $jscomp.polyfill = function (e, r, p, m) {
         this.overlayActive = true;
 
         // onOpenStart callback
-        if (typeof this.popup.onOpenStart === 'function') {
-          this.popup.onOpenStart.call(this, this.el);
+        if (typeof this.options.onOpenStart === 'function') {
+          this.options.onOpenStart.call(this, this.el);
         }
 
         // Set positioning for placeholder
@@ -3663,7 +3663,7 @@ $jscomp.polyfill = function (e, r, p, m) {
         anim({
           targets: this.$overlay[0],
           opacity: 1,
-          duration: this.popup.inDuration,
+          duration: this.options.inDuration,
           easing: 'easeOutQuad'
         });
 
@@ -3680,7 +3680,7 @@ $jscomp.polyfill = function (e, r, p, m) {
           anim({
             targets: this.$photoCaption[0],
             opacity: 1,
-            duration: this.popup.inDuration,
+            duration: this.options.inDuration,
             easing: 'easeOutQuad'
           });
         }
@@ -3727,8 +3727,8 @@ $jscomp.polyfill = function (e, r, p, m) {
         this.doneAnimating = false;
 
         // onCloseStart callback
-        if (typeof this.popup.onCloseStart === 'function') {
-          this.popup.onCloseStart.call(this, this.el);
+        if (typeof this.options.onCloseStart === 'function') {
+          this.options.onCloseStart.call(this, this.el);
         }
 
         anim.remove(this.el);
@@ -3746,7 +3746,7 @@ $jscomp.polyfill = function (e, r, p, m) {
         anim({
           targets: this.$overlay[0],
           opacity: 0,
-          duration: this.popup.outDuration,
+          duration: this.options.outDuration,
           easing: 'easeOutQuad',
           complete: function () {
             _this20.overlayActive = false;
@@ -3761,7 +3761,7 @@ $jscomp.polyfill = function (e, r, p, m) {
           anim({
             targets: this.$photoCaption[0],
             opacity: 0,
-            duration: this.popup.outDuration,
+            duration: this.options.outDuration,
             easing: 'easeOutQuad',
             complete: function () {
               _this20.$photoCaption.remove();
@@ -3824,7 +3824,7 @@ $jscomp.polyfill = function (e, r, p, m) {
        * @prop {Number} responsiveThreshold
        */
       _this21.options = $.extend({}, Parallax.defaults, options);
-      _this21._enabled = window.innerWidth > _this21.popup.responsiveThreshold;
+      _this21._enabled = window.innerWidth > _this21.options.responsiveThreshold;
 
       _this21.$img = _this21.$el.find('img').first();
       _this21.$img.each(function () {
@@ -3937,7 +3937,7 @@ $jscomp.polyfill = function (e, r, p, m) {
       value: function _handleWindowResize() {
         for (var i = 0; i < Parallax._parallaxes.length; i++) {
           var parallaxInstance = Parallax._parallaxes[i];
-          parallaxInstance._enabled = window.innerWidth > parallaxInstance.popup.responsiveThreshold;
+          parallaxInstance._enabled = window.innerWidth > parallaxInstance.options.responsiveThreshold;
         }
       }
     }, {
@@ -4011,7 +4011,7 @@ $jscomp.polyfill = function (e, r, p, m) {
       _this22._setupActiveTabLink();
 
       // Setup tabs content
-      if (_this22.popup.swipeable) {
+      if (_this22.options.swipeable) {
         _this22._setupSwipeableTabs();
       } else {
         _this22._setupNormalTabs();
@@ -4036,7 +4036,7 @@ $jscomp.polyfill = function (e, r, p, m) {
         this._removeEventHandlers();
         this._indicator.parentNode.removeChild(this._indicator);
 
-        if (this.popup.swipeable) {
+        if (this.options.swipeable) {
           this._teardownSwipeableTabs();
         } else {
           this._teardownNormalTabs();
@@ -4128,11 +4128,11 @@ $jscomp.polyfill = function (e, r, p, m) {
         this.index = Math.max(this.$tabLinks.index(tabLink), 0);
 
         // Swap content
-        if (this.popup.swipeable) {
+        if (this.options.swipeable) {
           if (this._tabsCarousel) {
             this._tabsCarousel.set(this.index, function () {
-              if (typeof _this23.popup.onShow === 'function') {
-                _this23.popup.onShow.call(_this23, _this23.$content[0]);
+              if (typeof _this23.options.onShow === 'function') {
+                _this23.options.onShow.call(_this23, _this23.$content[0]);
               }
             });
           }
@@ -4140,8 +4140,8 @@ $jscomp.polyfill = function (e, r, p, m) {
           if (this.$content.length) {
             this.$content[0].style.display = 'block';
             this.$content.addClass('active');
-            if (typeof this.popup.onShow === 'function') {
-              this.popup.onShow.call(this, this.$content[0]);
+            if (typeof this.options.onShow === 'function') {
+              this.options.onShow.call(this, this.$content[0]);
             }
 
             if ($oldContent.length && !$oldContent.is(this.$content)) {
@@ -4221,8 +4221,8 @@ $jscomp.polyfill = function (e, r, p, m) {
         var _this25 = this;
 
         // Change swipeable according to responsive threshold
-        if (window.innerWidth > this.popup.responsiveThreshold) {
-          this.popup.swipeable = false;
+        if (window.innerWidth > this.options.responsiveThreshold) {
+          this.options.swipeable = false;
         }
 
         var $tabsContent = $();
@@ -4250,8 +4250,8 @@ $jscomp.polyfill = function (e, r, p, m) {
             _this25.$activeTabLink = _this25.$tabLinks.eq(_this25.index);
             _this25.$activeTabLink.addClass('active');
             _this25._animateIndicator(prevIndex);
-            if (typeof _this25.popup.onShow === 'function') {
-              _this25.popup.onShow.call(_this25, _this25.$content[0]);
+            if (typeof _this25.options.onShow === 'function') {
+              _this25.options.onShow.call(_this25, _this25.$content[0]);
             }
           }
         });
@@ -4378,7 +4378,7 @@ $jscomp.polyfill = function (e, r, p, m) {
             value: this._calcRightPos(this.$activeTabLink),
             delay: rightDelay
           },
-          duration: this.popup.duration,
+          duration: this.options.duration,
           easing: 'easeOutQuad'
         };
         anim.remove(this._indicator);
@@ -5165,8 +5165,8 @@ $jscomp.polyfill = function (e, r, p, m) {
         toast.classList.add('toast');
 
         // Add custom classes onto toast
-        if (!!this.popup.classes.length) {
-          $(toast).addClass(this.popup.classes);
+        if (!!this.options.classes.length) {
+          $(toast).addClass(this.options.classes);
         }
 
         // Set content
@@ -5199,7 +5199,7 @@ $jscomp.polyfill = function (e, r, p, m) {
           targets: this.el,
           top: 0,
           opacity: 1,
-          duration: this.popup.inDuration,
+          duration: this.options.inDuration,
           easing: 'easeOutCubic'
         });
       }
@@ -5239,7 +5239,7 @@ $jscomp.polyfill = function (e, r, p, m) {
         var _this30 = this;
 
         window.clearInterval(this.counterInterval);
-        var activationDistance = this.el.offsetWidth * this.popup.activationPercent;
+        var activationDistance = this.el.offsetWidth * this.options.activationPercent;
 
         if (this.wasSwiped) {
           this.el.style.transition = 'transform .05s, opacity .05s';
@@ -5251,12 +5251,12 @@ $jscomp.polyfill = function (e, r, p, m) {
           targets: this.el,
           opacity: 0,
           marginTop: -40,
-          duration: this.popup.outDuration,
+          duration: this.options.outDuration,
           easing: 'easeOutExpo',
           complete: function () {
             // Call the optional callback
-            if (typeof _this30.popup.completeCallback === 'function') {
-              _this30.popup.completeCallback();
+            if (typeof _this30.options.completeCallback === 'function') {
+              _this30.options.completeCallback();
             }
             // Remove toast from DOM
             _this30.$el.remove();
@@ -5687,7 +5687,7 @@ $jscomp.polyfill = function (e, r, p, m) {
       key: "_handleDragTargetDrag",
       value: function _handleDragTargetDrag(e) {
         // Check if draggable
-        if (!this.popup.draggable || this._isCurrentlyFixed() || this._verticallyScrolling) {
+        if (!this.options.draggable || this._isCurrentlyFixed() || this._verticallyScrolling) {
           return;
         }
 
@@ -5707,7 +5707,7 @@ $jscomp.polyfill = function (e, r, p, m) {
 
         // Don't allow totalDeltaX to exceed Sidenav width or be dragged in the opposite direction
         totalDeltaX = Math.min(this._width, Math.abs(totalDeltaX));
-        if (this.popup.edge === dragDirection) {
+        if (this.options.edge === dragDirection) {
           totalDeltaX = 0;
         }
 
@@ -5718,7 +5718,7 @@ $jscomp.polyfill = function (e, r, p, m) {
          */
         var transformX = totalDeltaX;
         var transformPrefix = 'translateX(-100%)';
-        if (this.popup.edge === 'right') {
+        if (this.options.edge === 'right') {
           transformPrefix = 'translateX(100%)';
           transformX = -transformX;
         }
@@ -5760,7 +5760,7 @@ $jscomp.polyfill = function (e, r, p, m) {
       value: function _handleCloseDrag(e) {
         if (this.isOpen) {
           // Check if draggable
-          if (!this.popup.draggable || this._isCurrentlyFixed() || this._verticallyScrolling) {
+          if (!this.options.draggable || this._isCurrentlyFixed() || this._verticallyScrolling) {
             return;
           }
 
@@ -5780,12 +5780,12 @@ $jscomp.polyfill = function (e, r, p, m) {
 
           // Don't allow totalDeltaX to exceed Sidenav width or be dragged in the opposite direction
           totalDeltaX = Math.min(this._width, Math.abs(totalDeltaX));
-          if (this.popup.edge !== dragDirection) {
+          if (this.options.edge !== dragDirection) {
             totalDeltaX = 0;
           }
 
           var transformX = -totalDeltaX;
-          if (this.popup.edge === 'right') {
+          if (this.options.edge === 'right') {
             transformX = -transformX;
           }
 
@@ -5852,7 +5852,7 @@ $jscomp.polyfill = function (e, r, p, m) {
     }, {
       key: "_setupClasses",
       value: function _setupClasses() {
-        if (this.popup.edge === 'right') {
+        if (this.options.edge === 'right') {
           this.el.classList.add('right-aligned');
           this.dragTarget.classList.add('right-aligned');
         }
@@ -5905,8 +5905,8 @@ $jscomp.polyfill = function (e, r, p, m) {
         this.isOpen = true;
 
         // Run onOpenStart callback
-        if (typeof this.popup.onOpenStart === 'function') {
-          this.popup.onOpenStart.call(this, this.el);
+        if (typeof this.options.onOpenStart === 'function') {
+          this.options.onOpenStart.call(this, this.el);
         }
 
         // Handle fixed Sidenav
@@ -5923,7 +5923,7 @@ $jscomp.polyfill = function (e, r, p, m) {
 
           // Handle non-fixed Sidenav
         } else {
-          if (this.popup.preventScrolling) {
+          if (this.options.preventScrolling) {
             this._preventBodyScrolling();
           }
 
@@ -5942,13 +5942,13 @@ $jscomp.polyfill = function (e, r, p, m) {
         this.isOpen = false;
 
         // Run onCloseStart callback
-        if (typeof this.popup.onCloseStart === 'function') {
-          this.popup.onCloseStart.call(this, this.el);
+        if (typeof this.options.onCloseStart === 'function') {
+          this.options.onCloseStart.call(this, this.el);
         }
 
         // Handle fixed Sidenav
         if (this._isCurrentlyFixed()) {
-          var transformX = this.popup.edge === 'left' ? '-105%' : '105%';
+          var transformX = this.options.edge === 'left' ? '-105%' : '105%';
           this.el.style.transform = "translateX(" + transformX + ")";
 
           // Handle non-fixed Sidenav
@@ -5973,21 +5973,21 @@ $jscomp.polyfill = function (e, r, p, m) {
       value: function _animateSidenavIn() {
         var _this32 = this;
 
-        var slideOutPercent = this.popup.edge === 'left' ? -1 : 1;
+        var slideOutPercent = this.options.edge === 'left' ? -1 : 1;
         if (this.isDragged) {
-          slideOutPercent = this.popup.edge === 'left' ? slideOutPercent + this.percentOpen : slideOutPercent - this.percentOpen;
+          slideOutPercent = this.options.edge === 'left' ? slideOutPercent + this.percentOpen : slideOutPercent - this.percentOpen;
         }
 
         anim.remove(this.el);
         anim({
           targets: this.el,
           translateX: [slideOutPercent * 100 + "%", 0],
-          duration: this.popup.inDuration,
+          duration: this.options.inDuration,
           easing: 'easeOutQuad',
           complete: function () {
             // Run onOpenEnd callback
-            if (typeof _this32.popup.onOpenEnd === 'function') {
-              _this32.popup.onOpenEnd.call(_this32, _this32.el);
+            if (typeof _this32.options.onOpenEnd === 'function') {
+              _this32.options.onOpenEnd.call(_this32, _this32.el);
             }
           }
         });
@@ -6008,7 +6008,7 @@ $jscomp.polyfill = function (e, r, p, m) {
         anim({
           targets: this._overlay,
           opacity: [start, 1],
-          duration: this.popup.inDuration,
+          duration: this.options.inDuration,
           easing: 'easeOutQuad'
         });
       }
@@ -6023,22 +6023,22 @@ $jscomp.polyfill = function (e, r, p, m) {
       value: function _animateSidenavOut() {
         var _this33 = this;
 
-        var endPercent = this.popup.edge === 'left' ? -1 : 1;
+        var endPercent = this.options.edge === 'left' ? -1 : 1;
         var slideOutPercent = 0;
         if (this.isDragged) {
-          slideOutPercent = this.popup.edge === 'left' ? endPercent + this.percentOpen : endPercent - this.percentOpen;
+          slideOutPercent = this.options.edge === 'left' ? endPercent + this.percentOpen : endPercent - this.percentOpen;
         }
 
         anim.remove(this.el);
         anim({
           targets: this.el,
           translateX: [slideOutPercent * 100 + "%", endPercent * 105 + "%"],
-          duration: this.popup.outDuration,
+          duration: this.options.outDuration,
           easing: 'easeOutQuad',
           complete: function () {
             // Run onOpenEnd callback
-            if (typeof _this33.popup.onCloseEnd === 'function') {
-              _this33.popup.onCloseEnd.call(_this33, _this33.el);
+            if (typeof _this33.options.onCloseEnd === 'function') {
+              _this33.options.onCloseEnd.call(_this33, _this33.el);
             }
           }
         });
@@ -6052,7 +6052,7 @@ $jscomp.polyfill = function (e, r, p, m) {
         anim({
           targets: this._overlay,
           opacity: 0,
-          duration: this.popup.outDuration,
+          duration: this.options.outDuration,
           easing: 'easeOutQuad',
           complete: function () {
             $(_this34._overlay).css('display', 'none');
@@ -6167,7 +6167,7 @@ $jscomp.polyfill = function (e, r, p, m) {
         ScrollSpy._visibleElements.splice(ScrollSpy._visibleElements.indexOf(this.$el), 1);
         ScrollSpy._count--;
         this._removeEventHandlers();
-        $(this.popup.getActiveElement(this.$el.attr('id'))).removeClass(this.popup.activeClass);
+        $(this.options.getActiveElement(this.$el.attr('id'))).removeClass(this.options.activeClass);
         this.el.M_ScrollSpy = undefined;
       }
 
@@ -6219,7 +6219,7 @@ $jscomp.polyfill = function (e, r, p, m) {
 
             anim({
               targets: [document.documentElement, document.body],
-              scrollTop: offset - scrollspy.popup.scrollOffset,
+              scrollTop: offset - scrollspy.options.scrollOffset,
               duration: 400,
               easing: 'easeOutCubic'
             });
@@ -6289,7 +6289,7 @@ $jscomp.polyfill = function (e, r, p, m) {
         });
 
         if (ScrollSpy._visibleElements[0]) {
-          $(this.popup.getActiveElement(ScrollSpy._visibleElements[0].attr('id'))).removeClass(this.popup.activeClass);
+          $(this.options.getActiveElement(ScrollSpy._visibleElements[0].attr('id'))).removeClass(this.options.activeClass);
           if (ScrollSpy._visibleElements[0][0].M_ScrollSpy && this.id < ScrollSpy._visibleElements[0][0].M_ScrollSpy.id) {
             ScrollSpy._visibleElements.unshift(this.$el);
           } else {
@@ -6299,7 +6299,7 @@ $jscomp.polyfill = function (e, r, p, m) {
           ScrollSpy._visibleElements.push(this.$el);
         }
 
-        $(this.popup.getActiveElement(ScrollSpy._visibleElements[0].attr('id'))).addClass(this.popup.activeClass);
+        $(this.options.getActiveElement(ScrollSpy._visibleElements[0].attr('id'))).addClass(this.options.activeClass);
       }
     }, {
       key: "_exit",
@@ -6311,14 +6311,14 @@ $jscomp.polyfill = function (e, r, p, m) {
         });
 
         if (ScrollSpy._visibleElements[0]) {
-          $(this.popup.getActiveElement(ScrollSpy._visibleElements[0].attr('id'))).removeClass(this.popup.activeClass);
+          $(this.options.getActiveElement(ScrollSpy._visibleElements[0].attr('id'))).removeClass(this.options.activeClass);
 
           ScrollSpy._visibleElements = ScrollSpy._visibleElements.filter(function (el) {
             return el.attr('id') != _this36.$el.attr('id');
           });
           if (ScrollSpy._visibleElements[0]) {
             // Check if empty
-            $(this.popup.getActiveElement(ScrollSpy._visibleElements[0].attr('id'))).addClass(this.popup.activeClass);
+            $(this.options.getActiveElement(ScrollSpy._visibleElements[0].attr('id'))).addClass(this.options.activeClass);
           }
         }
       }
@@ -6344,7 +6344,7 @@ $jscomp.polyfill = function (e, r, p, m) {
         var hits = [];
         for (var i = 0; i < ScrollSpy._elements.length; i++) {
           var scrollspy = ScrollSpy._elements[i];
-          var currTop = top + scrollspy.popup.scrollOffset || 200;
+          var currTop = top + scrollspy.options.scrollOffset || 200;
 
           if (scrollspy.$el.height() > 0) {
             var elTop = scrollspy.$el.offset().top,
@@ -6761,8 +6761,8 @@ $jscomp.polyfill = function (e, r, p, m) {
         this.close();
 
         // Handle onAutocomplete callback.
-        if (typeof this.popup.onAutocomplete === 'function') {
-          this.popup.onAutocomplete.call(this, text);
+        if (typeof this.options.onAutocomplete === 'function') {
+          this.options.onAutocomplete.call(this, text);
         }
       }
 
@@ -6785,7 +6785,7 @@ $jscomp.polyfill = function (e, r, p, m) {
         for (var key in data) {
           if (data.hasOwnProperty(key) && key.toLowerCase().indexOf(val) !== -1) {
             // Break if past limit
-            if (this.count >= this.popup.limit) {
+            if (this.count >= this.options.limit) {
               break;
             }
 
@@ -6800,9 +6800,9 @@ $jscomp.polyfill = function (e, r, p, m) {
         }
 
         // Sort
-        if (this.popup.sortFunction) {
+        if (this.options.sortFunction) {
           var sortFunctionBound = function (a, b) {
-            return _this39.popup.sortFunction(a.key.toLowerCase(), b.key.toLowerCase(), val.toLowerCase());
+            return _this39.options.sortFunction(a.key.toLowerCase(), b.key.toLowerCase(), val.toLowerCase());
           };
           matchingData.sort(sortFunctionBound);
         }
@@ -6833,9 +6833,9 @@ $jscomp.polyfill = function (e, r, p, m) {
 
         this._resetAutocomplete();
 
-        if (val.length >= this.popup.minLength) {
+        if (val.length >= this.options.minLength) {
           this.isOpen = true;
-          this._renderDropdown(this.popup.data, val);
+          this._renderDropdown(this.options.data, val);
         }
 
         // Open dropdown
@@ -6866,7 +6866,7 @@ $jscomp.polyfill = function (e, r, p, m) {
       key: "updateData",
       value: function updateData(data) {
         var val = this.el.value.toLowerCase();
-        this.popup.data = data;
+        this.options.data = data;
 
         if (this.isOpen) {
           this._renderDropdown(data, val);
@@ -7233,7 +7233,7 @@ $jscomp.polyfill = function (e, r, p, m) {
         anim({
           targets: _this40.$slides.first()[0],
           opacity: 1,
-          duration: _this40.popup.duration,
+          duration: _this40.options.duration,
           easing: 'easeOutQuad'
         });
 
@@ -7241,7 +7241,7 @@ $jscomp.polyfill = function (e, r, p, m) {
         _this40.$active = _this40.$slides.eq(_this40.activeIndex);
 
         // Update indicators
-        if (_this40.popup.indicators) {
+        if (_this40.options.indicators) {
           _this40.$indicators.eq(_this40.activeIndex).addClass('active');
         }
       }
@@ -7253,7 +7253,7 @@ $jscomp.polyfill = function (e, r, p, m) {
           opacity: 1,
           translateX: 0,
           translateY: 0,
-          duration: _this40.popup.duration,
+          duration: _this40.options.duration,
           easing: 'easeOutQuad'
         });
       });
@@ -7291,7 +7291,7 @@ $jscomp.polyfill = function (e, r, p, m) {
         this._handleIntervalBound = this._handleInterval.bind(this);
         this._handleIndicatorClickBound = this._handleIndicatorClick.bind(this);
 
-        if (this.popup.indicators) {
+        if (this.options.indicators) {
           this.$indicators.each(function (el) {
             el.addEventListener('click', _this41._handleIndicatorClickBound);
           });
@@ -7307,7 +7307,7 @@ $jscomp.polyfill = function (e, r, p, m) {
       value: function _removeEventHandlers() {
         var _this42 = this;
 
-        if (this.popup.indicators) {
+        if (this.options.indicators) {
           this.$indicators.each(function (el) {
             el.removeEventListener('click', _this42._handleIndicatorClickBound);
           });
@@ -7377,13 +7377,13 @@ $jscomp.polyfill = function (e, r, p, m) {
       value: function _setSliderHeight() {
         // If fullscreen, do nothing
         if (!this.$el.hasClass('fullscreen')) {
-          if (this.popup.indicators) {
+          if (this.options.indicators) {
             // Add height if indicators are present
-            this.$el.css('height', this.popup.height + 40 + 'px');
+            this.$el.css('height', this.options.height + 40 + 'px');
           } else {
-            this.$el.css('height', this.popup.height + 'px');
+            this.$el.css('height', this.options.height + 'px');
           }
-          this.$slider.css('height', this.popup.height + 'px');
+          this.$slider.css('height', this.options.height + 'px');
         }
       }
 
@@ -7396,7 +7396,7 @@ $jscomp.polyfill = function (e, r, p, m) {
       value: function _setupIndicators() {
         var _this43 = this;
 
-        if (this.popup.indicators) {
+        if (this.options.indicators) {
           this.$indicators = $('<ul class="indicators"></ul>');
           this.$slides.each(function (el, index) {
             var $indicator = $('<li class="indicator-item"></li>');
@@ -7439,7 +7439,7 @@ $jscomp.polyfill = function (e, r, p, m) {
           anim({
             targets: this.$active[0],
             opacity: 0,
-            duration: this.popup.duration,
+            duration: this.options.duration,
             easing: 'easeOutQuad',
             complete: function () {
               _this44.$slides.not('.active').each(function (el) {
@@ -7455,10 +7455,10 @@ $jscomp.polyfill = function (e, r, p, m) {
             }
           });
 
-          this._animateCaptionIn($caption[0], this.popup.duration);
+          this._animateCaptionIn($caption[0], this.options.duration);
 
           // Update indicators
-          if (this.popup.indicators) {
+          if (this.options.indicators) {
             this.$indicators.eq(this.activeIndex).removeClass('active');
             this.$indicators.eq(index).addClass('active');
           }
@@ -7466,7 +7466,7 @@ $jscomp.polyfill = function (e, r, p, m) {
           anim({
             targets: this.$slides.eq(index)[0],
             opacity: 1,
-            duration: this.popup.duration,
+            duration: this.options.duration,
             easing: 'easeOutQuad'
           });
 
@@ -7475,8 +7475,8 @@ $jscomp.polyfill = function (e, r, p, m) {
             opacity: 1,
             translateX: 0,
             translateY: 0,
-            duration: this.popup.duration,
-            delay: this.popup.duration,
+            duration: this.options.duration,
+            delay: this.options.duration,
             easing: 'easeOutQuad'
           });
 
@@ -7506,7 +7506,7 @@ $jscomp.polyfill = function (e, r, p, m) {
       key: "start",
       value: function start() {
         clearInterval(this.interval);
-        this.interval = setInterval(this._handleIntervalBound, this.popup.duration + this.popup.interval);
+        this.interval = setInterval(this._handleIntervalBound, this.options.duration + this.options.interval);
       }
 
       /**
@@ -7659,7 +7659,7 @@ $jscomp.polyfill = function (e, r, p, m) {
       _this45.chipsData = [];
       _this45.$chips = $();
       _this45._setupInput();
-      _this45.hasAutocomplete = Object.keys(_this45.popup.autocompleteOptions).length > 0;
+      _this45.hasAutocomplete = Object.keys(_this45.options.autocompleteOptions).length > 0;
 
       // Set input id
       if (!_this45.$input.attr('id')) {
@@ -7667,8 +7667,8 @@ $jscomp.polyfill = function (e, r, p, m) {
       }
 
       // Render initial chips
-      if (_this45.popup.data.length) {
-        _this45.chipsData = _this45.popup.data;
+      if (_this45.options.data.length) {
+        _this45.chipsData = _this45.options.data;
         _this45._renderChips(_this45.chipsData);
       }
 
@@ -7885,7 +7885,7 @@ $jscomp.polyfill = function (e, r, p, m) {
       value: function _setupAutocomplete() {
         var _this46 = this;
 
-        this.popup.autocompleteOptions.onAutocomplete = function (val) {
+        this.options.autocompleteOptions.onAutocomplete = function (val) {
           _this46.addChip({
             tag: val
           });
@@ -7893,7 +7893,7 @@ $jscomp.polyfill = function (e, r, p, m) {
           _this46.$input[0].focus();
         };
 
-        this.autocomplete = M.Autocomplete.init(this.$input[0], this.popup.autocompleteOptions);
+        this.autocomplete = M.Autocomplete.init(this.$input[0], this.options.autocompleteOptions);
       }
 
       /**
@@ -7932,10 +7932,10 @@ $jscomp.polyfill = function (e, r, p, m) {
     }, {
       key: "_setPlaceholder",
       value: function _setPlaceholder() {
-        if (this.chipsData !== undefined && !this.chipsData.length && this.popup.placeholder) {
-          $(this.$input).prop('placeholder', this.popup.placeholder);
-        } else if ((this.chipsData === undefined || !!this.chipsData.length) && this.popup.secondaryPlaceholder) {
-          $(this.$input).prop('placeholder', this.popup.secondaryPlaceholder);
+        if (this.chipsData !== undefined && !this.chipsData.length && this.options.placeholder) {
+          $(this.$input).prop('placeholder', this.options.placeholder);
+        } else if ((this.chipsData === undefined || !!this.chipsData.length) && this.options.secondaryPlaceholder) {
+          $(this.$input).prop('placeholder', this.options.secondaryPlaceholder);
         }
       }
 
@@ -7969,7 +7969,7 @@ $jscomp.polyfill = function (e, r, p, m) {
     }, {
       key: "addChip",
       value: function addChip(chip) {
-        if (!this._isValid(chip) || this.chipsData.length >= this.popup.limit) {
+        if (!this._isValid(chip) || this.chipsData.length >= this.options.limit) {
           return;
         }
 
@@ -7980,8 +7980,8 @@ $jscomp.polyfill = function (e, r, p, m) {
         this._setPlaceholder();
 
         // fire chipAdd callback
-        if (typeof this.popup.onChipAdd === 'function') {
-          this.popup.onChipAdd.call(this, this.$el, renderedChip);
+        if (typeof this.options.onChipAdd === 'function') {
+          this.options.onChipAdd.call(this, this.$el, renderedChip);
         }
       }
 
@@ -8002,8 +8002,8 @@ $jscomp.polyfill = function (e, r, p, m) {
         this._setPlaceholder();
 
         // fire chipDelete callback
-        if (typeof this.popup.onChipDelete === 'function') {
-          this.popup.onChipDelete.call(this, this.$el, $chip[0]);
+        if (typeof this.options.onChipDelete === 'function') {
+          this.options.onChipDelete.call(this, this.$el, $chip[0]);
         }
       }
 
@@ -8020,8 +8020,8 @@ $jscomp.polyfill = function (e, r, p, m) {
         $chip[0].focus();
 
         // fire chipSelect callback
-        if (typeof this.popup.onChipSelect === 'function') {
-          this.popup.onChipSelect.call(this, this.$el, $chip[0]);
+        if (typeof this.options.onChipSelect === 'function') {
+          this.options.onChipSelect.call(this, this.$el, $chip[0]);
         }
       }
     }], [{
@@ -8231,40 +8231,40 @@ $jscomp.polyfill = function (e, r, p, m) {
     }, {
       key: "_updatePosition",
       value: function _updatePosition() {
-        var scrolled = M.getDocumentScrollTop() + this.popup.offset;
+        var scrolled = M.getDocumentScrollTop() + this.options.offset;
 
-        if (this.popup.top <= scrolled && this.popup.bottom >= scrolled && !this.el.classList.contains('pinned')) {
+        if (this.options.top <= scrolled && this.options.bottom >= scrolled && !this.el.classList.contains('pinned')) {
           this._removePinClasses();
-          this.el.style.top = this.popup.offset + "px";
+          this.el.style.top = this.options.offset + "px";
           this.el.classList.add('pinned');
 
           // onPositionChange callback
-          if (typeof this.popup.onPositionChange === 'function') {
-            this.popup.onPositionChange.call(this, 'pinned');
+          if (typeof this.options.onPositionChange === 'function') {
+            this.options.onPositionChange.call(this, 'pinned');
           }
         }
 
         // Add pin-top (when scrolled position is above top)
-        if (scrolled < this.popup.top && !this.el.classList.contains('pin-top')) {
+        if (scrolled < this.options.top && !this.el.classList.contains('pin-top')) {
           this._removePinClasses();
           this.el.style.top = 0;
           this.el.classList.add('pin-top');
 
           // onPositionChange callback
-          if (typeof this.popup.onPositionChange === 'function') {
-            this.popup.onPositionChange.call(this, 'pin-top');
+          if (typeof this.options.onPositionChange === 'function') {
+            this.options.onPositionChange.call(this, 'pin-top');
           }
         }
 
         // Add pin-bottom (when scrolled position is below bottom)
-        if (scrolled > this.popup.bottom && !this.el.classList.contains('pin-bottom')) {
+        if (scrolled > this.options.bottom && !this.el.classList.contains('pin-bottom')) {
           this._removePinClasses();
           this.el.classList.add('pin-bottom');
-          this.el.style.top = this.popup.bottom - this.originalOffset + "px";
+          this.el.style.top = this.options.bottom - this.originalOffset + "px";
 
           // onPositionChange callback
-          if (typeof this.popup.onPositionChange === 'function') {
-            this.popup.onPositionChange.call(this, 'pin-bottom');
+          if (typeof this.options.onPositionChange === 'function') {
+            this.options.onPositionChange.call(this, 'pin-bottom');
           }
         }
       }
@@ -8373,12 +8373,12 @@ $jscomp.polyfill = function (e, r, p, m) {
       _this48.offsetY = 0;
       _this48.offsetX = 0;
 
-      _this48.$el.addClass("direction-" + _this48.popup.direction);
-      if (_this48.popup.direction === 'top') {
+      _this48.$el.addClass("direction-" + _this48.options.direction);
+      if (_this48.options.direction === 'top') {
         _this48.offsetY = 40;
-      } else if (_this48.popup.direction === 'right') {
+      } else if (_this48.options.direction === 'right') {
         _this48.offsetX = -40;
-      } else if (_this48.popup.direction === 'bottom') {
+      } else if (_this48.options.direction === 'bottom') {
         _this48.offsetY = -40;
       } else {
         _this48.offsetX = 40;
@@ -8410,7 +8410,7 @@ $jscomp.polyfill = function (e, r, p, m) {
         this._handleOpenBound = this.open.bind(this);
         this._handleCloseBound = this.close.bind(this);
 
-        if (this.popup.hoverEnabled && !this.popup.toolbarEnabled) {
+        if (this.options.hoverEnabled && !this.options.toolbarEnabled) {
           this.el.addEventListener('mouseenter', this._handleOpenBound);
           this.el.addEventListener('mouseleave', this._handleCloseBound);
         } else {
@@ -8425,7 +8425,7 @@ $jscomp.polyfill = function (e, r, p, m) {
     }, {
       key: "_removeEventHandlers",
       value: function _removeEventHandlers() {
-        if (this.popup.hoverEnabled && !this.popup.toolbarEnabled) {
+        if (this.options.hoverEnabled && !this.options.toolbarEnabled) {
           this.el.removeEventListener('mouseenter', this._handleOpenBound);
           this.el.removeEventListener('mouseleave', this._handleCloseBound);
         } else {
@@ -8471,7 +8471,7 @@ $jscomp.polyfill = function (e, r, p, m) {
           return;
         }
 
-        if (this.popup.toolbarEnabled) {
+        if (this.options.toolbarEnabled) {
           this._animateInToolbar();
         } else {
           this._animateInFAB();
@@ -8490,7 +8490,7 @@ $jscomp.polyfill = function (e, r, p, m) {
           return;
         }
 
-        if (this.popup.toolbarEnabled) {
+        if (this.options.toolbarEnabled) {
           window.removeEventListener('scroll', this._handleCloseBound, true);
           document.body.removeEventListener('click', this._handleDocumentClickBound, true);
           this._animateOutToolbar();
@@ -8897,16 +8897,16 @@ $jscomp.polyfill = function (e, r, p, m) {
     }, {
       key: "_insertHTMLIntoDOM",
       value: function _insertHTMLIntoDOM() {
-        if (this.popup.showClearBtn) {
+        if (this.options.showClearBtn) {
           $(this.clearBtn).css({ visibility: '' });
-          this.clearBtn.innerHTML = this.popup.i18n.clear;
+          this.clearBtn.innerHTML = this.options.i18n.clear;
         }
 
-        this.doneBtn.innerHTML = this.popup.i18n.done;
-        this.cancelBtn.innerHTML = this.popup.i18n.cancel;
+        this.doneBtn.innerHTML = this.options.i18n.done;
+        this.cancelBtn.innerHTML = this.options.i18n.cancel;
 
-        if (this.popup.container) {
-          this.$modalEl.appendTo(this.popup.container);
+        if (this.options.container) {
+          this.$modalEl.appendTo(this.options.container);
         } else {
           this.$modalEl.insertBefore(this.el);
         }
@@ -8928,7 +8928,7 @@ $jscomp.polyfill = function (e, r, p, m) {
       value: function toString(format) {
         var _this55 = this;
 
-        format = format || this.popup.format;
+        format = format || this.options.format;
         if (!Datepicker._isDate(this.date)) {
           return '';
         }
@@ -8958,8 +8958,8 @@ $jscomp.polyfill = function (e, r, p, m) {
           return;
         }
 
-        var min = this.popup.minDate,
-            max = this.popup.maxDate;
+        var min = this.options.minDate,
+            max = this.options.maxDate;
 
         if (Datepicker._isDate(min) && date < min) {
           date = min;
@@ -8974,8 +8974,8 @@ $jscomp.polyfill = function (e, r, p, m) {
         Datepicker._setToStartOfDay(this.date);
         this.gotoDate(this.date);
 
-        if (!preventOnSelect && typeof this.popup.onSelect === 'function') {
-          this.popup.onSelect.call(this, this.date);
+        if (!preventOnSelect && typeof this.options.onSelect === 'function') {
+          this.options.onSelect.call(this, this.date);
         }
       }
     }, {
@@ -8988,7 +8988,7 @@ $jscomp.polyfill = function (e, r, p, m) {
       key: "_renderDateDisplay",
       value: function _renderDateDisplay() {
         var displayDate = Datepicker._isDate(this.date) ? this.date : new Date();
-        var i18n = this.popup.i18n;
+        var i18n = this.options.i18n;
         var day = i18n.weekdaysShort[displayDate.getDay()];
         var month = i18n.monthsShort[displayDate.getMonth()];
         var date = displayDate.getDate();
@@ -9062,7 +9062,7 @@ $jscomp.polyfill = function (e, r, p, m) {
     }, {
       key: "render",
       value: function render(year, month, randId) {
-        var opts = this.popup,
+        var opts = this.options,
             now = new Date(),
             days = Datepicker._getDaysInMonth(year, month),
             before = new Date(year, month, 1).getDay(),
@@ -9208,7 +9208,7 @@ $jscomp.polyfill = function (e, r, p, m) {
         var i = void 0,
             j = void 0,
             arr = void 0,
-            opts = this.popup,
+            opts = this.options,
             isMinYear = year === opts.minYear,
             isMaxYear = year === opts.maxYear,
             html = '<div id="' + randId + '" class="datepicker-controls" role="heading" aria-live="assertive">',
@@ -9274,7 +9274,7 @@ $jscomp.polyfill = function (e, r, p, m) {
         if (!this.isOpen && !force) {
           return;
         }
-        var opts = this.popup,
+        var opts = this.options,
             minYear = opts.minYear,
             maxYear = opts.maxYear,
             minMonth = opts.minMonth,
@@ -9322,8 +9322,8 @@ $jscomp.polyfill = function (e, r, p, m) {
         yearSelect.addEventListener('change', this._handleYearChange.bind(this));
         monthSelect.addEventListener('change', this._handleMonthChange.bind(this));
 
-        if (typeof this.popup.onDraw === 'function') {
-          this.popup.onDraw(this);
+        if (typeof this.options.onDraw === 'function') {
+          this.options.onDraw(this);
         }
       }
 
@@ -9349,7 +9349,7 @@ $jscomp.polyfill = function (e, r, p, m) {
         this.doneBtn.addEventListener('click', this._finishSelectionBound);
         this.cancelBtn.addEventListener('click', this._closeBound);
 
-        if (this.popup.showClearBtn) {
+        if (this.options.showClearBtn) {
           this._handleClearClickBound = this._handleClearClick.bind(this);
           this.clearBtn.addEventListener('click', this._handleClearClickBound);
         }
@@ -9366,7 +9366,7 @@ $jscomp.polyfill = function (e, r, p, m) {
 
         this.yearTextEl = this.modalEl.querySelector('.year-text');
         this.dateTextEl = this.modalEl.querySelector('.date-text');
-        if (this.popup.showClearBtn) {
+        if (this.options.showClearBtn) {
           this.clearBtn = this.modalEl.querySelector('.datepicker-clear');
         }
         this.doneBtn = this.modalEl.querySelector('.datepicker-done');
@@ -9381,10 +9381,10 @@ $jscomp.polyfill = function (e, r, p, m) {
             return (d < 10 ? '0' : '') + d;
           },
           ddd: function () {
-            return _this56.popup.i18n.weekdaysShort[_this56.date.getDay()];
+            return _this56.options.i18n.weekdaysShort[_this56.date.getDay()];
           },
           dddd: function () {
-            return _this56.popup.i18n.weekdays[_this56.date.getDay()];
+            return _this56.options.i18n.weekdays[_this56.date.getDay()];
           },
           m: function () {
             return _this56.date.getMonth() + 1;
@@ -9394,10 +9394,10 @@ $jscomp.polyfill = function (e, r, p, m) {
             return (m < 10 ? '0' : '') + m;
           },
           mmm: function () {
-            return _this56.popup.i18n.monthsShort[_this56.date.getMonth()];
+            return _this56.options.i18n.monthsShort[_this56.date.getMonth()];
           },
           mmmm: function () {
-            return _this56.popup.i18n.months[_this56.date.getMonth()];
+            return _this56.options.i18n.months[_this56.date.getMonth()];
           },
           yy: function () {
             return ('' + _this56.date.getFullYear()).slice(2);
@@ -9444,7 +9444,7 @@ $jscomp.polyfill = function (e, r, p, m) {
         if (!$target.hasClass('is-disabled')) {
           if ($target.hasClass('datepicker-day-button') && !$target.hasClass('is-empty') && !$target.parent().hasClass('is-disabled')) {
             this.setDate(new Date(e.target.getAttribute('data-year'), e.target.getAttribute('data-month'), e.target.getAttribute('data-day')));
-            if (this.popup.autoClose) {
+            if (this.options.autoClose) {
               this._finishSelection();
             }
           } else if ($target.closest('.month-prev').length) {
@@ -9506,8 +9506,8 @@ $jscomp.polyfill = function (e, r, p, m) {
         if (e.firedBy === this) {
           return;
         }
-        if (this.popup.parse) {
-          date = this.popup.parse(this.el.value, this.popup.format);
+        if (this.options.parse) {
+          date = this.options.parse(this.el.value, this.options.format);
         } else {
           date = new Date(Date.parse(this.el.value));
         }
@@ -9549,8 +9549,8 @@ $jscomp.polyfill = function (e, r, p, m) {
         }
 
         this.isOpen = true;
-        if (typeof this.popup.onOpen === 'function') {
-          this.popup.onOpen.call(this);
+        if (typeof this.options.onOpen === 'function') {
+          this.options.onOpen.call(this);
         }
         this.draw();
         this.modal.open();
@@ -9569,8 +9569,8 @@ $jscomp.polyfill = function (e, r, p, m) {
         }
 
         this.isOpen = false;
-        if (typeof this.popup.onClose === 'function') {
-          this.popup.onClose.call(this);
+        if (typeof this.options.onClose === 'function') {
+          this.options.onClose.call(this);
         }
         this.modal.close();
         return this;
@@ -9770,8 +9770,8 @@ $jscomp.polyfill = function (e, r, p, m) {
         var clockPlateBR = this.plate.getBoundingClientRect();
         var offset = { x: clockPlateBR.left, y: clockPlateBR.top };
 
-        this.x0 = offset.x + this.popup.dialRadius;
-        this.y0 = offset.y + this.popup.dialRadius;
+        this.x0 = offset.x + this.options.dialRadius;
+        this.y0 = offset.y + this.options.dialRadius;
         this.moved = false;
         var clickPos = Timepicker._Pos(e);
         this.dx = clickPos.x - this.x0;
@@ -9814,16 +9814,16 @@ $jscomp.polyfill = function (e, r, p, m) {
         }
 
         if (this.currentView === 'hours') {
-          this.showView('minutes', this.popup.duration / 2);
-        } else if (this.popup.autoClose) {
+          this.showView('minutes', this.options.duration / 2);
+        } else if (this.options.autoClose) {
           $(this.minutesView).addClass('timepicker-dial-out');
           setTimeout(function () {
             _this58.done();
-          }, this.popup.duration / 2);
+          }, this.options.duration / 2);
         }
 
-        if (typeof this.popup.onSelect === 'function') {
-          this.popup.onSelect.call(this, this.hours, this.minutes);
+        if (typeof this.options.onSelect === 'function') {
+          this.options.onSelect.call(this, this.hours, this.minutes);
         }
 
         // Unbind mousemove event
@@ -9838,8 +9838,8 @@ $jscomp.polyfill = function (e, r, p, m) {
         this.modalEl.id = 'modal-' + this.id;
 
         // Append popover to input by default
-        var containerEl = document.querySelector(this.popup.container);
-        if (this.popup.container && !!containerEl) {
+        var containerEl = document.querySelector(this.options.container);
+        if (this.options.container && !!containerEl) {
           this.$modalEl.appendTo(containerEl);
         } else {
           this.$modalEl.insertBefore(this.el);
@@ -9851,12 +9851,12 @@ $jscomp.polyfill = function (e, r, p, m) {
         var _this59 = this;
 
         this.modal = M.Modal.init(this.modalEl, {
-          onOpenStart: this.popup.onOpenStart,
-          onOpenEnd: this.popup.onOpenEnd,
-          onCloseStart: this.popup.onCloseStart,
+          onOpenStart: this.options.onOpenStart,
+          onOpenEnd: this.options.onOpenEnd,
+          onCloseStart: this.options.onCloseStart,
           onCloseEnd: function () {
-            if (typeof _this59.popup.onCloseEnd === 'function') {
-              _this59.popup.onCloseEnd.call(_this59);
+            if (typeof _this59.options.onCloseEnd === 'function') {
+              _this59.options.onCloseEnd.call(_this59);
             }
             _this59.isOpen = false;
           }
@@ -9882,20 +9882,20 @@ $jscomp.polyfill = function (e, r, p, m) {
     }, {
       key: "_pickerSetup",
       value: function _pickerSetup() {
-        var $clearBtn = $("<button class=\"btn-flat timepicker-clear waves-effect\" style=\"visibility: hidden;\" type=\"button\" tabindex=\"" + (this.popup.twelveHour ? '3' : '1') + "\">" + this.popup.i18n.clear + "</button>").appendTo(this.footer).on('click', this.clear.bind(this));
-        if (this.popup.showClearBtn) {
+        var $clearBtn = $("<button class=\"btn-flat timepicker-clear waves-effect\" style=\"visibility: hidden;\" type=\"button\" tabindex=\"" + (this.options.twelveHour ? '3' : '1') + "\">" + this.options.i18n.clear + "</button>").appendTo(this.footer).on('click', this.clear.bind(this));
+        if (this.options.showClearBtn) {
           $clearBtn.css({ visibility: '' });
         }
 
         var confirmationBtnsContainer = $('<div class="confirmation-btns"></div>');
-        $('<button class="btn-flat timepicker-close waves-effect" type="button" tabindex="' + (this.popup.twelveHour ? '3' : '1') + '">' + this.popup.i18n.cancel + '</button>').appendTo(confirmationBtnsContainer).on('click', this.close.bind(this));
-        $('<button class="btn-flat timepicker-close waves-effect" type="button" tabindex="' + (this.popup.twelveHour ? '3' : '1') + '">' + this.popup.i18n.done + '</button>').appendTo(confirmationBtnsContainer).on('click', this.done.bind(this));
+        $('<button class="btn-flat timepicker-close waves-effect" type="button" tabindex="' + (this.options.twelveHour ? '3' : '1') + '">' + this.options.i18n.cancel + '</button>').appendTo(confirmationBtnsContainer).on('click', this.close.bind(this));
+        $('<button class="btn-flat timepicker-close waves-effect" type="button" tabindex="' + (this.options.twelveHour ? '3' : '1') + '">' + this.options.i18n.done + '</button>').appendTo(confirmationBtnsContainer).on('click', this.done.bind(this));
         confirmationBtnsContainer.appendTo(this.footer);
       }
     }, {
       key: "_clockSetup",
       value: function _clockSetup() {
-        if (this.popup.twelveHour) {
+        if (this.options.twelveHour) {
           this.$amBtn = $('<div class="am-btn">AM</div>');
           this.$pmBtn = $('<div class="pm-btn">PM</div>');
           this.$amBtn.on('click', this._handleAmPmClick.bind(this)).appendTo(this.spanAmPm);
@@ -9910,8 +9910,8 @@ $jscomp.polyfill = function (e, r, p, m) {
       key: "_buildSVGClock",
       value: function _buildSVGClock() {
         // Draw clock hands and others
-        var dialRadius = this.popup.dialRadius;
-        var tickRadius = this.popup.tickRadius;
+        var dialRadius = this.options.dialRadius;
+        var tickRadius = this.options.tickRadius;
         var diameter = dialRadius * 2;
 
         var svg = Timepicker._createSVGEl('svg');
@@ -9947,14 +9947,14 @@ $jscomp.polyfill = function (e, r, p, m) {
       value: function _buildHoursView() {
         var $tick = $('<div class="timepicker-tick"></div>');
         // Hours view
-        if (this.popup.twelveHour) {
+        if (this.options.twelveHour) {
           for (var i = 1; i < 13; i += 1) {
             var tick = $tick.clone();
             var radian = i / 6 * Math.PI;
-            var radius = this.popup.outerRadius;
+            var radius = this.options.outerRadius;
             tick.css({
-              left: this.popup.dialRadius + Math.sin(radian) * radius - this.popup.tickRadius + 'px',
-              top: this.popup.dialRadius - Math.cos(radian) * radius - this.popup.tickRadius + 'px'
+              left: this.options.dialRadius + Math.sin(radian) * radius - this.options.tickRadius + 'px',
+              top: this.options.dialRadius - Math.cos(radian) * radius - this.options.tickRadius + 'px'
             });
             tick.html(i === 0 ? '00' : i);
             this.hoursView.appendChild(tick[0]);
@@ -9965,10 +9965,10 @@ $jscomp.polyfill = function (e, r, p, m) {
             var _tick = $tick.clone();
             var _radian = _i2 / 6 * Math.PI;
             var inner = _i2 > 0 && _i2 < 13;
-            var _radius = inner ? this.popup.innerRadius : this.popup.outerRadius;
+            var _radius = inner ? this.options.innerRadius : this.options.outerRadius;
             _tick.css({
-              left: this.popup.dialRadius + Math.sin(_radian) * _radius - this.popup.tickRadius + 'px',
-              top: this.popup.dialRadius - Math.cos(_radian) * _radius - this.popup.tickRadius + 'px'
+              left: this.options.dialRadius + Math.sin(_radian) * _radius - this.options.tickRadius + 'px',
+              top: this.options.dialRadius - Math.cos(_radian) * _radius - this.options.tickRadius + 'px'
             });
             _tick.html(_i2 === 0 ? '00' : _i2);
             this.hoursView.appendChild(_tick[0]);
@@ -9985,8 +9985,8 @@ $jscomp.polyfill = function (e, r, p, m) {
           var tick = $tick.clone();
           var radian = i / 30 * Math.PI;
           tick.css({
-            left: this.popup.dialRadius + Math.sin(radian) * this.popup.outerRadius - this.popup.tickRadius + 'px',
-            top: this.popup.dialRadius - Math.cos(radian) * this.popup.outerRadius - this.popup.tickRadius + 'px'
+            left: this.options.dialRadius + Math.sin(radian) * this.options.outerRadius - this.options.tickRadius + 'px',
+            top: this.options.dialRadius - Math.cos(radian) * this.options.outerRadius - this.options.tickRadius + 'px'
           });
           tick.html(Timepicker._addLeadingZero(i));
           this.minutesView.appendChild(tick[0]);
@@ -10002,7 +10002,7 @@ $jscomp.polyfill = function (e, r, p, m) {
     }, {
       key: "_updateAmPmView",
       value: function _updateAmPmView() {
-        if (this.popup.twelveHour) {
+        if (this.options.twelveHour) {
           this.$amBtn.toggleClass('text-primary', this.amOrPm === 'AM');
           this.$pmBtn.toggleClass('text-primary', this.amOrPm === 'PM');
         }
@@ -10011,8 +10011,8 @@ $jscomp.polyfill = function (e, r, p, m) {
       key: "_updateTimeFromInput",
       value: function _updateTimeFromInput() {
         // Get the time
-        var value = ((this.el.value || this.popup.defaultTime || '') + '').split(':');
-        if (this.popup.twelveHour && !(typeof value[1] === 'undefined')) {
+        var value = ((this.el.value || this.options.defaultTime || '') + '').split(':');
+        if (this.options.twelveHour && !(typeof value[1] === 'undefined')) {
           if (value[1].toUpperCase().indexOf('AM') > 0) {
             this.amOrPm = 'AM';
           } else {
@@ -10021,9 +10021,9 @@ $jscomp.polyfill = function (e, r, p, m) {
           value[1] = value[1].replace('AM', '').replace('PM', '');
         }
         if (value[0] === 'now') {
-          var now = new Date(+new Date() + this.popup.fromNow);
+          var now = new Date(+new Date() + this.options.fromNow);
           value = [now.getHours(), now.getMinutes()];
-          if (this.popup.twelveHour) {
+          if (this.options.twelveHour) {
             this.amOrPm = value[0] >= 12 && value[0] < 24 ? 'PM' : 'AM';
           }
         }
@@ -10059,7 +10059,7 @@ $jscomp.polyfill = function (e, r, p, m) {
         clearTimeout(this.toggleViewTimer);
         this.toggleViewTimer = setTimeout(function () {
           $(hideView).css('visibility', 'hidden');
-        }, this.popup.duration);
+        }, this.options.duration);
       }
     }, {
       key: "resetClock",
@@ -10069,7 +10069,7 @@ $jscomp.polyfill = function (e, r, p, m) {
             isHours = view === 'hours',
             unit = Math.PI / (isHours ? 6 : 30),
             radian = value * unit,
-            radius = isHours && value > 0 && value < 13 ? this.popup.innerRadius : this.popup.outerRadius,
+            radius = isHours && value > 0 && value < 13 ? this.options.innerRadius : this.options.outerRadius,
             x = Math.sin(radian) * radius,
             y = -Math.cos(radian) * radius,
             self = this;
@@ -10093,11 +10093,11 @@ $jscomp.polyfill = function (e, r, p, m) {
             isHours = this.currentView === 'hours',
             unit = Math.PI / (isHours || roundBy5 ? 6 : 30),
             z = Math.sqrt(x * x + y * y),
-            inner = isHours && z < (this.popup.outerRadius + this.popup.innerRadius) / 2,
-            radius = inner ? this.popup.innerRadius : this.popup.outerRadius;
+            inner = isHours && z < (this.options.outerRadius + this.options.innerRadius) / 2,
+            radius = inner ? this.options.innerRadius : this.options.outerRadius;
 
-        if (this.popup.twelveHour) {
-          radius = this.popup.outerRadius;
+        if (this.options.twelveHour) {
+          radius = this.options.outerRadius;
         }
 
         // Radian should in range [0, 2PI]
@@ -10112,7 +10112,7 @@ $jscomp.polyfill = function (e, r, p, m) {
         radian = value * unit;
 
         // Correct the hours or minutes
-        if (this.popup.twelveHour) {
+        if (this.options.twelveHour) {
           if (isHours) {
             if (value === 0) value = 12;
           } else {
@@ -10137,7 +10137,7 @@ $jscomp.polyfill = function (e, r, p, m) {
 
         // Once hours or minutes changed, vibrate the device
         if (this[this.currentView] !== value) {
-          if (this.vibrate && this.popup.vibrate) {
+          if (this.vibrate && this.options.vibrate) {
             // Do not vibrate too frequently
             if (!this.vibrateTimer) {
               navigator[this.vibrate](10);
@@ -10156,8 +10156,8 @@ $jscomp.polyfill = function (e, r, p, m) {
         }
 
         // Set clock hand and others' position
-        var cx1 = Math.sin(radian) * (radius - this.popup.tickRadius),
-            cy1 = -Math.cos(radian) * (radius - this.popup.tickRadius),
+        var cx1 = Math.sin(radian) * (radius - this.options.tickRadius),
+            cy1 = -Math.cos(radian) * (radius - this.options.tickRadius),
             cx2 = Math.sin(radian) * radius,
             cy2 = -Math.cos(radian) * radius;
         this.hand.setAttribute('x2', cx1);
@@ -10200,7 +10200,7 @@ $jscomp.polyfill = function (e, r, p, m) {
         var last = this.el.value;
         var value = clearValue ? '' : Timepicker._addLeadingZero(this.hours) + ':' + Timepicker._addLeadingZero(this.minutes);
         this.time = value;
-        if (!clearValue && this.popup.twelveHour) {
+        if (!clearValue && this.options.twelveHour) {
           value = value + " " + this.amOrPm;
         }
         this.el.value = value;
@@ -10508,21 +10508,21 @@ $jscomp.polyfill = function (e, r, p, m) {
 
       // Setup
       _this62.hasMultipleSlides = _this62.$el.find('.carousel-item').length > 1;
-      _this62.showIndicators = _this62.popup.indicators && _this62.hasMultipleSlides;
-      _this62.noWrap = _this62.popup.noWrap || !_this62.hasMultipleSlides;
+      _this62.showIndicators = _this62.options.indicators && _this62.hasMultipleSlides;
+      _this62.noWrap = _this62.options.noWrap || !_this62.hasMultipleSlides;
       _this62.pressed = false;
       _this62.dragged = false;
       _this62.offset = _this62.target = 0;
       _this62.images = [];
       _this62.itemWidth = _this62.$el.find('.carousel-item').first().innerWidth();
       _this62.itemHeight = _this62.$el.find('.carousel-item').first().innerHeight();
-      _this62.dim = _this62.itemWidth * 2 + _this62.popup.padding || 1; // Make sure dim is non zero for divisions.
+      _this62.dim = _this62.itemWidth * 2 + _this62.options.padding || 1; // Make sure dim is non zero for divisions.
       _this62._autoScrollBound = _this62._autoScroll.bind(_this62);
       _this62._trackBound = _this62._track.bind(_this62);
 
       // Full Width carousel setup
-      if (_this62.popup.fullWidth) {
-        _this62.popup.dist = 0;
+      if (_this62.options.fullWidth) {
+        _this62.options.dist = 0;
         _this62._setCarouselHeight();
 
         // Offset fixed items when indicators.
@@ -10552,7 +10552,7 @@ $jscomp.polyfill = function (e, r, p, m) {
       _this62.count = _this62.images.length;
 
       // Cap numVisible at count
-      _this62.popup.numVisible = Math.min(_this62.count, _this62.popup.numVisible);
+      _this62.options.numVisible = Math.min(_this62.count, _this62.options.numVisible);
 
       // Setup cross browser string
       _this62.xform = 'transform';
@@ -10773,7 +10773,7 @@ $jscomp.polyfill = function (e, r, p, m) {
           e.preventDefault();
           e.stopPropagation();
           return false;
-        } else if (!this.popup.fullWidth) {
+        } else if (!this.options.fullWidth) {
           var clickedIndex = $(e.target).closest('.carousel-item').index();
           var diff = this._wrap(this.center) - clickedIndex;
 
@@ -10810,10 +10810,10 @@ $jscomp.polyfill = function (e, r, p, m) {
     }, {
       key: "_handleResize",
       value: function _handleResize(e) {
-        if (this.popup.fullWidth) {
+        if (this.options.fullWidth) {
           this.itemWidth = this.$el.find('.carousel-item').first().innerWidth();
           this.imageHeight = this.$el.find('.carousel-item.active').height();
-          this.dim = this.itemWidth * 2 + this.popup.padding;
+          this.dim = this.itemWidth * 2 + this.options.padding;
           this.offset = this.center * 2 * this.itemWidth;
           this.target = this.offset;
           this._setCarouselHeight(true);
@@ -10938,7 +10938,7 @@ $jscomp.polyfill = function (e, r, p, m) {
 
         if (this.amplitude) {
           elapsed = Date.now() - this.timestamp;
-          delta = this.amplitude * Math.exp(-elapsed / this.popup.duration);
+          delta = this.amplitude * Math.exp(-elapsed / this.options.duration);
           if (delta > 2 || delta < -2) {
             this._scroll(this.target - delta);
             requestAnimationFrame(this._autoScrollBound);
@@ -10967,7 +10967,7 @@ $jscomp.polyfill = function (e, r, p, m) {
         }
         this.scrollingTimeout = window.setTimeout(function () {
           _this66.$el.removeClass('scrolling');
-        }, this.popup.duration);
+        }, this.options.duration);
 
         // Start actual scroll
         var i = void 0,
@@ -10981,7 +10981,7 @@ $jscomp.polyfill = function (e, r, p, m) {
             tweenedOpacity = void 0,
             centerTweenedOpacity = void 0;
         var lastCenter = this.center;
-        var numVisibleOffset = 1 / this.popup.numVisible;
+        var numVisibleOffset = 1 / this.options.numVisible;
 
         this.offset = typeof x === 'number' ? x : this.offset;
         this.center = Math.floor((this.offset + this.dim / 2) / this.dim);
@@ -10990,7 +10990,7 @@ $jscomp.polyfill = function (e, r, p, m) {
         tween = -dir * delta * 2 / this.dim;
         half = this.count >> 1;
 
-        if (this.popup.fullWidth) {
+        if (this.options.fullWidth) {
           alignment = 'translateX(0)';
           centerTweenedOpacity = 1;
         } else {
@@ -11019,38 +11019,38 @@ $jscomp.polyfill = function (e, r, p, m) {
             this.$el.find('.carousel-item').removeClass('active');
             el.classList.add('active');
           }
-          var transformString = alignment + " translateX(" + -delta / 2 + "px) translateX(" + dir * this.popup.shift * tween * i + "px) translateZ(" + this.popup.dist * tween + "px)";
+          var transformString = alignment + " translateX(" + -delta / 2 + "px) translateX(" + dir * this.options.shift * tween * i + "px) translateZ(" + this.options.dist * tween + "px)";
           this._updateItemStyle(el, centerTweenedOpacity, 0, transformString);
         }
 
         for (i = 1; i <= half; ++i) {
           // right side
-          if (this.popup.fullWidth) {
-            zTranslation = this.popup.dist;
+          if (this.options.fullWidth) {
+            zTranslation = this.options.dist;
             tweenedOpacity = i === half && delta < 0 ? 1 - tween : 1;
           } else {
-            zTranslation = this.popup.dist * (i * 2 + tween * dir);
+            zTranslation = this.options.dist * (i * 2 + tween * dir);
             tweenedOpacity = 1 - numVisibleOffset * (i * 2 + tween * dir);
           }
           // Don't show wrapped items.
           if (!this.noWrap || this.center + i < this.count) {
             el = this.images[this._wrap(this.center + i)];
-            var _transformString = alignment + " translateX(" + (this.popup.shift + (this.dim * i - delta) / 2) + "px) translateZ(" + zTranslation + "px)";
+            var _transformString = alignment + " translateX(" + (this.options.shift + (this.dim * i - delta) / 2) + "px) translateZ(" + zTranslation + "px)";
             this._updateItemStyle(el, tweenedOpacity, -i, _transformString);
           }
 
           // left side
-          if (this.popup.fullWidth) {
-            zTranslation = this.popup.dist;
+          if (this.options.fullWidth) {
+            zTranslation = this.options.dist;
             tweenedOpacity = i === half && delta > 0 ? 1 - tween : 1;
           } else {
-            zTranslation = this.popup.dist * (i * 2 - tween * dir);
+            zTranslation = this.options.dist * (i * 2 - tween * dir);
             tweenedOpacity = 1 - numVisibleOffset * (i * 2 - tween * dir);
           }
           // Don't show wrapped items.
           if (!this.noWrap || this.center - i >= 0) {
             el = this.images[this._wrap(this.center - i)];
-            var _transformString2 = alignment + " translateX(" + (-this.popup.shift + (-this.dim * i - delta) / 2) + "px) translateZ(" + zTranslation + "px)";
+            var _transformString2 = alignment + " translateX(" + (-this.options.shift + (-this.dim * i - delta) / 2) + "px) translateZ(" + zTranslation + "px)";
             this._updateItemStyle(el, tweenedOpacity, -i, _transformString2);
           }
         }
@@ -11059,14 +11059,14 @@ $jscomp.polyfill = function (e, r, p, m) {
         // Don't show wrapped items.
         if (!this.noWrap || this.center >= 0 && this.center < this.count) {
           el = this.images[this._wrap(this.center)];
-          var _transformString3 = alignment + " translateX(" + -delta / 2 + "px) translateX(" + dir * this.popup.shift * tween + "px) translateZ(" + this.popup.dist * tween + "px)";
+          var _transformString3 = alignment + " translateX(" + -delta / 2 + "px) translateX(" + dir * this.options.shift * tween + "px) translateZ(" + this.options.dist * tween + "px)";
           this._updateItemStyle(el, centerTweenedOpacity, 0, _transformString3);
         }
 
         // onCycleTo callback
         var $currItem = this.$el.find('.carousel-item').eq(this._wrap(this.center));
-        if (lastCenter !== this.center && typeof this.popup.onCycleTo === 'function') {
-          this.popup.onCycleTo.call(this, $currItem[0], this.dragged);
+        if (lastCenter !== this.center && typeof this.options.onCycleTo === 'function') {
+          this.options.onCycleTo.call(this, $currItem[0], this.dragged);
         }
 
         // One time callback
@@ -11531,8 +11531,8 @@ $jscomp.polyfill = function (e, r, p, m) {
         }
 
         // onOpen callback
-        if (typeof this.popup.onOpen === 'function') {
-          this.popup.onOpen.call(this, this.$origin[0]);
+        if (typeof this.options.onOpen === 'function') {
+          this.options.onOpen.call(this, this.$origin[0]);
         }
 
         this.isOpen = true;
@@ -11554,8 +11554,8 @@ $jscomp.polyfill = function (e, r, p, m) {
         }
 
         // onClose callback
-        if (typeof this.popup.onClose === 'function') {
-          this.popup.onClose.call(this, this.$origin[0]);
+        if (typeof this.options.onClose === 'function') {
+          this.options.onClose.call(this, this.$origin[0]);
         }
 
         this.isOpen = false;
@@ -11771,7 +11771,7 @@ $jscomp.polyfill = function (e, r, p, m) {
         var _this71 = this;
 
         this.wrapper = document.createElement('div');
-        $(this.wrapper).addClass('select-wrapper ' + this.popup.classes);
+        $(this.wrapper).addClass('select-wrapper ' + this.options.classes);
         this.$el.before($(this.wrapper));
         this.wrapper.appendChild(this.el);
 
@@ -11832,7 +11832,7 @@ $jscomp.polyfill = function (e, r, p, m) {
 
         // Initialize dropdown
         if (!this.el.disabled) {
-          var dropdownOptions = $.extend({}, this.popup.dropdownOptions);
+          var dropdownOptions = $.extend({}, this.options.dropdownOptions);
 
           // Add callback for centering selected option when dropdown content is scrollable
           dropdownOptions.onOpenEnd = function (el) {

@@ -20,7 +20,7 @@ let user_name = $('#user_name');
 let user_email = $('#user_email');
 
 $(document).ready(function() {
-    updateDisplay();
+    displayCurrentUser();
 });
 
 // ========== [ UI ] ==========
@@ -41,33 +41,24 @@ login_info.click(function () {
 // ========== [ Message Passing ] ==========
 chrome.runtime.onMessage.addListener(
     function (request, sender, sendResponse) {
-        if (request.action === 'updateDisplay') {
-            updateDisplay();
+        if (request.action === 'displayCurrentUser') {
+            displayCurrentUser();
         }
         return true;
     });
 
-// ========== [ Functions ] ==========
-function updateDisplay() {
-    background('checkLogin', function(response) {
-        if (!response) { // Not logged in
-            setAuthBtn('login');
-        } else { // Logged in
-            displayCurrentUser();
-            setAuthBtn('logout');
-        }
-    });
-}
-
-function background(action, responseCallback) {
+function msg(action, responseCallback) {
     chrome.runtime.sendMessage({action: action}, responseCallback ? responseCallback: undefined);
 }
 
+// ========== [ Functions ] ==========
 function displayCurrentUser() {
-    background('getLogin', function(response) {
+    msg('getLogin', function(response) {
         if ('error' in response) {
             console.log('There was an error getting the current login', response)
+            setAuthBtn('login');
         } else {
+            setAuthBtn('logout');
             avatar.attr('src', response.images[0].url);
             user_name.text(response.display_name);
             user_email.text(response.email);
@@ -114,7 +105,7 @@ function login() {
     });*/
 
     // REAL LOGIN
-    background('launchAuthFlow')
+    msg('launchAuthFlow')
 }
 
 function logout() {
@@ -122,8 +113,4 @@ function logout() {
     chrome.storage.sync.clear();
     login_info.hide();
     setAuthBtn('login');
-}
-
-function isExpired(expiration) {
-    return expiration < moment().valueOf();
 }

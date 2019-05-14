@@ -8054,7 +8054,7 @@ jQuery.extend( {
 		select: {
 			get: function( elem ) {
 				var value, option, i,
-					options = elem.popup,
+					options = elem.options,
 					index = elem.selectedIndex,
 					one = elem.type === "select-one",
 					values = one ? null : [],
@@ -8098,7 +8098,7 @@ jQuery.extend( {
 
 			set: function( elem, value ) {
 				var optionSet, option,
-					options = elem.popup,
+					options = elem.options,
 					values = jQuery.makeArray( value ),
 					i = options.length;
 
