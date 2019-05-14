@@ -6,7 +6,10 @@ test_btn.click(function () {
     chrome.runtime.sendMessage({action: "api/getUserPlaylists"}, function(response) {
         console.log(response)
     });*/
-    displayCurrentUser();
+    // displayCurrentUser();
+    chrome.browserAction.getBadgeBackgroundColor({}, function (result) {
+        console.log(result);
+    })
 });
 
 // ============================================================
@@ -14,10 +17,13 @@ test_btn.click(function () {
 
 // ========== [ Globals ] ==========
 let auth_btn = $('#auth_btn');
+let select_btn = $('#select_btn');
 let login_info = $('#login_info');
+let playlist_list = $('#playlist_list');
 let avatar = $('#avatar');
 let user_name = $('#user_name');
 let user_email = $('#user_email');
+let selected_playlist_id = null;
 
 $(document).ready(function() {
     displayCurrentUser();
@@ -31,6 +37,44 @@ auth_btn.click(function (e) {
     } else if (btn.data( "type" ) === 'logout') {
         logout();
     }
+});
+
+select_btn.click(function (e) {
+    let btn = $(e.target);
+    login_info.toggle();
+    auth_btn.toggle();
+
+    if (playlist_list.css('display') === 'none') {
+
+        playlist_list.empty();
+
+        msg('api/getUserPlaylists', function (response) {
+            console.log('response', response);
+            response.items.forEach(function (playlist, index, array) {
+                let li = document.createElement('li');
+                li = $(li);
+                li.html(playlist.name + "<div class='secondary'>" + playlist.tracks.total + "</div>");
+                li.data('name', playlist.name);
+                li.data('id', playlist.id);
+                li.click(function (e) {
+                    $('li').removeClass();
+                    $(e.target).addClass('selected');
+                    selected_playlist_id = $(e.target).data('id');
+                });
+                li.dblclick(function (e) {
+                    msg('setPlaylist(' + $(e.target).data('id') + ')');
+                });
+
+                playlist_list.append(li);
+            });
+            playlist_list.show();
+        });
+    } else {
+        playlist_list.hide();
+    }
+
+
+
 });
 
 login_info.click(function () {
@@ -55,7 +99,12 @@ function msg(action, responseCallback) {
 function displayCurrentUser() {
     msg('getLogin', function(response) {
         if ('error' in response) {
-            console.log('There was an error getting the current login', response)
+            console.log('There was an error getting the current login', response);
+            //chrome.browserAction.setIcon(object details, function callback)
+            //https://developer.chrome.com/extensions/browserAction
+
+            login_info.hide();
+            select_btn.hide();
             setAuthBtn('login');
         } else {
             setAuthBtn('logout');
@@ -64,6 +113,7 @@ function displayCurrentUser() {
             user_email.text(response.email);
             login_info.attr('href', 'https://open.spotify.com/user/' + response.id);
             login_info.show();
+            select_btn.show();
         }
     });
 }
@@ -111,6 +161,5 @@ function login() {
 function logout() {
     console.log('Logged Out');
     chrome.storage.sync.clear();
-    login_info.hide();
-    setAuthBtn('login');
+    displayCurrentUser();
 }

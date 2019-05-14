@@ -19,13 +19,17 @@ chrome.runtime.onMessage.addListener(
         if (request.action === 'launchAuthFlow') {
             launchAuthFlow();
         }
+        if (request.action.indexOf('setPlaylist') > -1) {
+            let playlist_id = request.action.slice(request.action.indexOf('(') + 1, request.action.indexOf(')'));
+            console.log(playlist_id);
+        }
         if (request.action === 'api/getUserPlaylists') {
-            /*api.getUserPlaylists()
+            api.getUserPlaylists()
                 .then(function (result) {
                     sendResponse(result)
                 }, function (err) {
                     sendResponse(err)
-                });*/
+                });
         }
         return true;
     });
@@ -40,7 +44,9 @@ function getLogin() {
         chrome.storage.sync.get([key], result => {
             if (key in result) {
                 let login = result[key];
-                if ('access_token' in login.auth && 'refresh_token' in login.auth) {
+                if ('access_token' in login.auth
+                    && 'refresh_token' in login.auth
+                    && 'expiration' in login.auth) {
                     resolve(login);
                 } else {
                     reject({error: 'No login auth found'})
@@ -53,6 +59,10 @@ function getLogin() {
 }
 
 function setLogin(auth) {
+    Object.assign(auth, {
+        expiration: moment().add(auth.expires_in, 's').valueOf()
+    });
+
     let login = {
         auth: auth,
     };
@@ -63,6 +73,8 @@ function setLogin(auth) {
             chrome.storage.sync.set({login: login}, function () {
                 console.log('Login set to: ', login);
                 chrome.runtime.sendMessage({action: 'displayCurrentUser'});
+                //chrome.browserAction.setIcon(object details, function callback)
+                //https://developer.chrome.com/extensions/browserAction
             });
         }, function (err) {
             console.log(err);
@@ -228,33 +240,42 @@ let api = {
         });
 
     },
-    /*getUserPlaylists: function () {
+    getUserPlaylists: function () {
         return new Promise(function (resolve, reject) {
-            let settings = {
-                "async": true,
-                "crossDomain": true,
-                "url": "https://api.spotify.com/v1/users/1251570824/playlists?limit=50",
-                "method": "GET",
-                "headers": {
-                    "Authorization": "Bearer " + spotifyApi.login.auth.access_token, // NOPE
-                    "cache-control": "no-cache"
-                }
-            };
+            getLogin()
+                .then(function (result) {
+                    let settings = {
+                        "async": true,
+                        "crossDomain": true,
+                        "url": "https://api.spotify.com/v1/users/" + result.id + "/playlists?limit=50",
+                        "method": "GET",
+                        "headers": {
+                            "Authorization": "Bearer " + result.auth.access_token,
+                            "cache-control": "no-cache"
+                        }
+                    };
 
-            $.ajax(settings)
-                .done(function (response) {
-                    if (!('error' in response)) {
-                        resolve(response);
-                    } else if (response.error === 'The access token expired') {
-                        // todo refresh token
-                    } else {
-                        reject(response);
-                    }
-                })
-                .fail(function (response) {
-                    reject(response);
+                    $.ajax(settings)
+                        .done(function (response) {
+                            resolve(response);
+                        })
+                        .fail(function (response) {
+                            if (response.responseJSON.error.message === 'The access token expired') {
+                                // Attempt to refresh token
+                                api.getToken()
+                                    .then(function (result) {
+                                        resolve(api.getUserPlaylists());
+                                    }, function (err) {
+                                        reject(err);
+                                    });
+                            } else {
+                                reject(response);
+                            }
+                        });
+                }, function (err) {
+                    reject(err);
                 });
         });
-    },*/
+    },
 
 };

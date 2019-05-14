@@ -1,18 +1,22 @@
 body {
     /*background: #121212;*/
     font-family: Circular,Helvetica,Arial,sans-serif;
+    font-size: 14px;
+    line-height: 1;
+    font-weight: 700;
+    color: #616467;
 }
 
 #login_info {
     cursor: pointer;
 }
 
-.name {
-    font-size: 14px;
-    line-height: 1;
-    font-weight: 700;
-    color: #616467;
-}
+/*.name {*/
+/*    font-size: 14px;*/
+/*    line-height: 1;*/
+/*    font-weight: 700;*/
+/*    color: #616467;*/
+/*}*/
 
 .email {
     font-size: 12px;
@@ -31,7 +35,7 @@ body {
     line-height: 1;
     border-radius: 500px;
     padding: 12px 48px 14px;
-    transition-property: background-color,border-color,color,box-shadow,filter;
+    transition-property: background-color,border-color,color,box-shadow,filter, display;
     transition-duration: .3s;
     border-width: 0;
     letter-spacing: 2px;
@@ -73,3 +77,70 @@ body {
     background: #1ed760;
 }
 
+ul {
+    margin: 0.5rem 0 1rem 0;
+    height: 205px;
+    overflow: auto;
+}
+
+li {
+    line-height: 1.5rem;
+    padding: 10px 20px;
+    margin: 0;
+    text-align: left;
+    user-select: none;
+    cursor: pointer;
+    transition-property: background-color,border-color,color,box-shadow,filter, display;
+    transition-duration: .2s;
+    transition-timing-function: linear;
+}
+
+li:hover {
+    background: #616467;
+    color: #fff;
+}
+
+li.selected {
+    background: #1db954;
+    color: #fff;
+}
+
+.secondary {
+    float: right;
+}
+
+/*Custom Scrollbar*/
+
+/* width */
+ul::-webkit-scrollbar {
+    width: 6px;
+}
+
+/* Handle */
+ul::-webkit-scrollbar-thumb {
+    background: rgba(0,0,0,0.6);
+    border-radius: 10px;
+}
+
+
+/*.collection {
+    margin: 0.5rem 0 1rem 0;
+    border: 1px solid #e0e0e0;
+    border-radius: 2px;
+    overflow: hidden;
+    position: relative;
+}*/
+
+/*.collection .collection-item {
+    background-color: #fff;
+    line-height: 1.5rem;
+    padding: 10px 20px;
+    margin: 0;
+    border-bottom: 1px solid #e0e0e0;
+}*/
+
+/*
+.secondary-content {
+    float: right;
+    color: #26a69a;
+}*/
