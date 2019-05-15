@@ -10,9 +10,48 @@ test_btn.click(function () {
     // chrome.browserAction.getBadgeBackgroundColor({}, function (result) {
     //     console.log(result);
     // })
-    msg('getPlaylist', function (response) {
-        console.log(response);
-    })
+
+    let auth = {
+        "access_token": "BQB-X6iHkkAI0fikj82aKOH4Ia8cKday09ZxSDnI9L3DtTvQpEjdGcJGZgxS9ZjAS6VnHkVFgXI8DieUWrKvzCcw-sG4-lxCTSWgP4SYBrpkR9TfFBauXlCV2go4HU9MgtFxF_ekvsfBX0h8UCsRGwoOQ3UfiPq1cAwE0mtt",
+        "token_type": "Bearer",
+        "expires_in": 3600,
+        "refresh_token": "AQB9h1dnxb6AV7JB0PZ22aObAOwrxgyipeiRvI5f60PM3NzN9j-W-8Fo-17Tsx9jWlwZJcXT8JqGztQBRQ4aFQT1qxArwwRKcHKjthmIVBI5aFnZMZrunb2sWSOzzYprGkCveQ",
+        "scope": "playlist-read-private playlist-read-collaborative",
+        "expiration": 0
+    };
+
+    // msg({action: 'setLogin', params: auth}, function (response) {
+    //     console.log(response);
+    // });
+
+    let login = {
+        auth: auth,
+        display_name: "Christian Overton",
+        external_urls: {
+            spotify: "https://open.spotify.com/user/1251570824"
+        },
+        followers: {
+            href: null,
+            total: 28
+        },
+        href: "https://api.spotify.com/v1/users/1251570824",
+        id: "1251570824",
+        images: [
+            {
+                height: null,
+                url: "https://scontent.xx.fbcdn.net/v/t1.0-1/p200x200/16730162_759001374257510_2090258016787878205_n.jpg?_nc_cat=103&_nc_ht=scontent.xx&oh=71316afaca83541c0ddf77a3fe879ec2&oe=5D594311",
+                width: null
+            }
+        ],
+        type: "user",
+        uri: "spotify:user:1251570824"
+    };
+
+    chrome.storage.sync.set({login: login}, function () {
+        console.log('Test Login set to: ', login);
+        chrome.runtime.sendMessage({action: 'displayCurrentUser'});
+    });
+
 });
 
 // ============================================================
@@ -173,7 +212,9 @@ function updatePlaylistName() {
                     id: response.id
                 };
                 playlist_name.text(selected_playlist.name);
+                console.log(response, selected_playlist);
             } else {
+                console.log('error', response);
                 playlist_name.empty();
             }
         });
