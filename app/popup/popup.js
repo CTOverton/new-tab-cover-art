@@ -7,8 +7,11 @@ test_btn.click(function () {
         console.log(response)
     });*/
     // displayCurrentUser();
-    chrome.browserAction.getBadgeBackgroundColor({}, function (result) {
-        console.log(result);
+    // chrome.browserAction.getBadgeBackgroundColor({}, function (result) {
+    //     console.log(result);
+    // })
+    msg('getTracks', function (response) {
+        console.log(response);
     })
 });
 
@@ -19,11 +22,15 @@ test_btn.click(function () {
 let auth_btn = $('#auth_btn');
 let select_btn = $('#select_btn');
 let login_info = $('#login_info');
+let playlist_name = $('#playlist_name');
 let playlist_list = $('#playlist_list');
 let avatar = $('#avatar');
 let user_name = $('#user_name');
 let user_email = $('#user_email');
-let selected_playlist_id = null;
+let selected_playlist = {
+    name: null,
+    id: null
+};
 
 $(document).ready(function() {
     displayCurrentUser();
@@ -40,14 +47,10 @@ auth_btn.click(function (e) {
 });
 
 select_btn.click(function (e) {
-    let btn = $(e.target);
-    login_info.toggle();
-    auth_btn.toggle();
-
     if (playlist_list.css('display') === 'none') {
-
+        login_info.hide();
+        auth_btn.hide();
         playlist_list.empty();
-
         msg('api/getUserPlaylists', function (response) {
             console.log('response', response);
             response.items.forEach(function (playlist, index, array) {
@@ -59,10 +62,17 @@ select_btn.click(function (e) {
                 li.click(function (e) {
                     $('li').removeClass();
                     $(e.target).addClass('selected');
-                    selected_playlist_id = $(e.target).data('id');
+                    selected_playlist = {
+                        name: $(e.target).data('name'),
+                        id: $(e.target).data('id')
+                    };
                 });
                 li.dblclick(function (e) {
-                    msg('setPlaylist(' + $(e.target).data('id') + ')');
+                    updatePlaylistName();
+                    msg({action: 'setPlaylist', params: {id: selected_playlist.id, name: selected_playlist.name}});
+                    playlist_list.hide();
+                    login_info.show();
+                    auth_btn.show();
                 });
 
                 playlist_list.append(li);
@@ -70,7 +80,13 @@ select_btn.click(function (e) {
             playlist_list.show();
         });
     } else {
+        if (selected_playlist.name !== null && selected_playlist.id !== null) {
+            updatePlaylistName();
+            msg({action: 'setPlaylist', params: {id: selected_playlist.id, name: selected_playlist.name}});
+        }
         playlist_list.hide();
+        login_info.show();
+        auth_btn.show();
     }
 
 
@@ -92,7 +108,7 @@ chrome.runtime.onMessage.addListener(
     });
 
 function msg(action, responseCallback) {
-    chrome.runtime.sendMessage({action: action}, responseCallback ? responseCallback: undefined);
+    chrome.runtime.sendMessage((typeof action === 'string') ? {action: action} : action, responseCallback ? responseCallback: undefined);
 }
 
 // ========== [ Functions ] ==========
@@ -103,6 +119,7 @@ function displayCurrentUser() {
             //chrome.browserAction.setIcon(object details, function callback)
             //https://developer.chrome.com/extensions/browserAction
 
+            playlist_name.hide();
             login_info.hide();
             select_btn.hide();
             setAuthBtn('login');
@@ -112,6 +129,8 @@ function displayCurrentUser() {
             user_name.text(response.display_name);
             user_email.text(response.email);
             login_info.attr('href', 'https://open.spotify.com/user/' + response.id);
+            updatePlaylistName();
+            playlist_name.show();
             login_info.show();
             select_btn.show();
         }
@@ -136,30 +155,29 @@ function setAuthBtn(type) {
 
 function login() {
     console.log('Logging in')
-
-    // FAKE LOGIN
-    /*chrome.storage.sync.set({
-        login: {
-            auth: {
-                access_token: 'dsfgdfgdfgundefdfgdfgdfgined',
-                refresh_token: 'asdasdafgeflkjucvbiemmew',
-                expiration: undefined,
-            },
-            display_name: 'Christian Overton',
-            id: '1251570824',
-            email: 'christianoverton@ctoverton.com',
-            avatar: 'https://scontent.xx.fbcdn.net/v/t1.0-1/p200x200/16730162_759001374257510_2090258016787878205_n.jpg?_nc_cat=103&_nc_ht=scontent.xx&oh=71316afaca83541c0ddf77a3fe879ec2&oe=5D594311'
-        }
-    }, function () {
-        updateDisplay()
-    });*/
-
-    // REAL LOGIN
-    msg('launchAuthFlow')
+    msg('launchAuthFlow');
 }
 
 function logout() {
     console.log('Logged Out');
     chrome.storage.sync.clear();
     displayCurrentUser();
+}
+
+function updatePlaylistName() {
+    if (selected_playlist.name === null) {
+        msg('getPlaylist', function (response) {
+            if (!('error' in response)) {
+                selected_playlist = {
+                    name: response.name,
+                    id: response.id
+                };
+                playlist_name.text(selected_playlist.name);
+            } else {
+                playlist_name.empty();
+            }
+        });
+    } else {
+        playlist_name.text(selected_playlist.name);
+    }
 }

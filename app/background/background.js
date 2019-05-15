@@ -4,24 +4,47 @@ let spotifyApi = {
     scopes: 'playlist-read-private, playlist-read-collaborative',
 };
 
+// let playlist = {
+//     name: undefined,
+//     id: undefined,
+//     expiration: undefined,
+// };
+
 // Message Passing
 chrome.runtime.onMessage.addListener(
     function (request, sender, sendResponse) {
         if (request.action === 'getLogin') {
             getLogin()
                 .then(function (result) {
-                        sendResponse(result);
-                    },
-                    function (err) {
-                        sendResponse(err);
-                    });
+                    sendResponse(result);
+                },
+                function (err) {
+                    sendResponse(err);
+                });
         }
         if (request.action === 'launchAuthFlow') {
             launchAuthFlow();
         }
-        if (request.action.indexOf('setPlaylist') > -1) {
-            let playlist_id = request.action.slice(request.action.indexOf('(') + 1, request.action.indexOf(')'));
-            console.log(playlist_id);
+        if (request.action === 'setPlaylist') {
+            setPlaylist(request.params.id, request.params.name);
+        }
+        if (request.action === 'getPlaylist') {
+            getPlaylist()
+                .then(function (result) {
+                    sendResponse(result);
+                },
+                function (err) {
+                    sendResponse(err);
+                });
+        }
+        if (request.action === 'getTracks') {
+            getTracks()
+                .then(function (result) {
+                    sendResponse(result);
+                },
+                function (err) {
+                    sendResponse(err);
+                });
         }
         if (request.action === 'api/getUserPlaylists') {
             api.getUserPlaylists()
@@ -103,6 +126,103 @@ function isExpired(unixTimeVal) {
     return unixTimeVal < moment().valueOf();
 }
 
+function setPlaylist(id, name) {
+    let playlist = {
+        name: name,
+        id: id,
+        expiration: moment().add(1, 'w').valueOf(), // Set to expire in 1 week
+    };
+
+    chrome.storage.sync.set({playlist: playlist}, function () {
+        console.log(playlist);
+    });
+}
+
+function setTracks() {
+    return new Promise(function (resolve, reject) {
+        api.getPlaylistTracks(id)
+            .then(function (result) {
+                let tracks = [];
+
+                for (let i = 0; i < result.items.length; i++) {
+                    let track = result.items[i].track;
+                    // strip down tracks to lower data size (take just the necessary values)
+                    tracks.push({
+                        album: {
+                            id: track.album.id,
+                            name: track.album.name,
+                            images: track.album.images
+                        },
+                        artists: track.artists,
+                        id: track.id,
+                        name: track.name,
+                        preview_url: track.preview_url,
+                    });
+                }
+
+                // Set tracks locally because over sync quota (102.4kb)
+                chrome.storage.local.set({tracks: tracks}, function () {
+                    resolve(tracks);
+                });
+            }, function (err) {
+                reject('err', err);
+            });
+    });
+}
+
+function getPlaylist() {
+    return new Promise(function (resolve, reject) {
+        let key = 'playlist';
+        chrome.storage.sync.get([key], result => {
+            if (key in result) {
+                let playlist = result[key];
+                if (playlist.name !== null
+                    && playlist.id !== null
+                    && playlist.expiration !== null) {
+                    resolve(playlist);
+                } else {
+                    reject({error: 'No playlist data found in sync storage'});
+                }
+            } else {
+                reject({error: 'No playlist variable found in sync storage'});
+            }
+        });
+    });
+}
+
+function getTracks() {
+    return new Promise(function (resolve, reject) {
+        getPlaylist()
+            .then(function (result) {
+                if (isExpired(result.expiration)) { // If expired, get new tracks from api
+                    setTracks()
+                        .then(function (result) {
+                            resolve(result);
+                        }, function (err) {
+                            reject(err);
+                        })
+                } else { // Get tracks from storage
+                    let key = 'tracks';
+                    chrome.storage.local.get([key], result => {
+                        if (key in result) { // Use current tracks
+                            let tracks = result[key];
+                            resolve(tracks);
+                        } else {
+                            setTracks()
+                                .then(function (result) {
+                                    resolve(result);
+                                }, function (err) {
+                                    reject(err);
+                                })
+                        }
+                    });
+                }
+            }, function (err) {
+                reject(err);
+            });
+    });
+}
+
 let api = {
     getAuthCode: function () {
         return new Promise(function (resolve, reject) {
@@ -132,7 +252,7 @@ let api = {
                     let code = url.searchParams.get("code"); // Authorization code used to get a token
                     let error = url.searchParams.get("error");
 
-                    if (code) { 
+                    if (code) {
                         api.getToken(code)
                             .then(function (result) {
                                 let token = result.access_token;
@@ -140,8 +260,9 @@ let api = {
                             }, function (err) {
                                 console.log(err);
                             })
+                    } else if (error) {
+                        reject(error)
                     }
-                    else if (error) { reject(error) }
                 });
         });
     },
@@ -215,7 +336,7 @@ let api = {
             }
         });
     },
-    getCurrentUser: function(access_token) {
+    getCurrentUser: function (access_token) {
         return new Promise(function (resolve, reject) {
             let settings = {
                 "async": true,
@@ -277,5 +398,51 @@ let api = {
                 });
         });
     },
+    getPlaylistTracks: function (id) {
+        // TODO: If playlist tracks are > 100 (aka response.next != null, get next 100 tracks
+        return new Promise(function (resolve, reject) {
+            checkToken()
+                .then(function (result) {
+                    if (result.refresh) {
+                        api.getToken()
+                            .then(function (result) {
+                                resolve(api.getPlaylistTracks());
+                            }, function (err) {
+                                reject(err);
+                            });
+                    } else {
+                        let settings = {
+                            "async": true,
+                            "crossDomain": true,
+                            "url": "https://api.spotify.com/v1/playlists/" + id + "/tracks?market=ES",
+                            "method": "GET",
+                            "headers": {
+                                "Authorization": "Bearer " + result.auth.access_token,
+                                "cache-control": "no-cache"
+                            }
+                        };
 
+                        $.ajax(settings)
+                            .done(function (response) {
+                                resolve(response);
+                            })
+                            .fail(function (response) {
+                                if (response.responseJSON.error.message === 'The access token expired') {
+                                    // Attempt to refresh token
+                                    api.getToken()
+                                        .then(function (result) {
+                                            resolve(api.getUserPlaylists());
+                                        }, function (err) {
+                                            reject(err);
+                                        });
+                                } else {
+                                    reject(response);
+                                }
+                            });
+                    }
+                }, function (err) {
+                    reject(err);
+                });
+        });
+    }
 };
