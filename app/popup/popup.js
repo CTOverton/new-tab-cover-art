@@ -10,7 +10,7 @@ test_btn.click(function () {
     // chrome.browserAction.getBadgeBackgroundColor({}, function (result) {
     //     console.log(result);
     // })
-    msg('getTracks', function (response) {
+    msg('getPlaylist', function (response) {
         console.log(response);
     })
 });

@@ -1,13 +1,9 @@
 {
-  "manifest_version": 2,
+  "manifest_version": 3,
 
   "name": "Spotify Discovery Theme",
   "version": "0.1.0",
-  "description": "New tab displays discovery album art",
-
-  "browser_action": {
-    "default_title": "Spotify Discovery Theme"
-  },
+  "description": "New tab displays cover art",
 
   "chrome_url_overrides" : {
     "newtab": "newtab/newtab.html"
@@ -29,7 +25,7 @@
 
   "browser_action": {
     "default_popup": "popup/popup.html",
-    "default_title": "Spotify Crop"
+    "default_title": "Spotify Discovery Theme"
   },
 
   "background": {

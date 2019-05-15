@@ -4,13 +4,7 @@ let spotifyApi = {
     scopes: 'playlist-read-private, playlist-read-collaborative',
 };
 
-// let playlist = {
-//     name: undefined,
-//     id: undefined,
-//     expiration: undefined,
-// };
-
-// Message Passing
+// ========== [ Message Passing ] ==========
 chrome.runtime.onMessage.addListener(
     function (request, sender, sendResponse) {
         if (request.action === 'getLogin') {
@@ -57,6 +51,7 @@ chrome.runtime.onMessage.addListener(
         return true;
     });
 
+// ========== [ Functions ] ==========
 function launchAuthFlow() {
     api.getAuthCode();
 }
@@ -127,45 +122,65 @@ function isExpired(unixTimeVal) {
 }
 
 function setPlaylist(id, name) {
-    let playlist = {
-        name: name,
-        id: id,
-        expiration: moment().add(1, 'w').valueOf(), // Set to expire in 1 week
-    };
+    getPlaylist()
+        .then(function (result) {
+            let playlist = {
+                name: name,
+                id: id,
+                expiration: moment().add(1, 'w').valueOf(), // Set to expire in 1 week
+                prev_playlist: result
+            };
 
-    chrome.storage.sync.set({playlist: playlist}, function () {
-        console.log(playlist);
-    });
+            chrome.storage.sync.set({playlist: playlist}, function () {
+                console.log(playlist);
+            });
+        }, function (err) {
+            let playlist = {
+                name: name,
+                id: id,
+                expiration: moment().add(1, 'w').valueOf(), // Set to expire in 1 week
+                prev_playlist: null
+            };
+
+            chrome.storage.sync.set({playlist: playlist}, function () {
+                console.log(playlist);
+            });
+        });
 }
 
 function setTracks() {
     return new Promise(function (resolve, reject) {
-        api.getPlaylistTracks(id)
+        getPlaylist()
             .then(function (result) {
-                let tracks = [];
+                api.getPlaylistTracks(result.id)
+                    .then(function (result) {
+                        let tracks = [];
 
-                for (let i = 0; i < result.items.length; i++) {
-                    let track = result.items[i].track;
-                    // strip down tracks to lower data size (take just the necessary values)
-                    tracks.push({
-                        album: {
-                            id: track.album.id,
-                            name: track.album.name,
-                            images: track.album.images
-                        },
-                        artists: track.artists,
-                        id: track.id,
-                        name: track.name,
-                        preview_url: track.preview_url,
+                        for (let i = 0; i < result.items.length; i++) {
+                            let track = result.items[i].track;
+                            // strip down tracks to lower data size (take just the necessary values)
+                            tracks.push({
+                                album: {
+                                    id: track.album.id,
+                                    name: track.album.name,
+                                    images: track.album.images
+                                },
+                                artists: track.artists,
+                                id: track.id,
+                                name: track.name,
+                                preview_url: track.preview_url,
+                            });
+                        }
+
+                        // Set tracks locally because over sync quota (102.4kb)
+                        chrome.storage.local.set({tracks: tracks}, function () {
+                            resolve(tracks);
+                        });
+                    }, function (err) {
+                        reject(err);
                     });
-                }
-
-                // Set tracks locally because over sync quota (102.4kb)
-                chrome.storage.local.set({tracks: tracks}, function () {
-                    resolve(tracks);
-                });
             }, function (err) {
-                reject('err', err);
+                reject(err)
             });
     });
 }
@@ -194,7 +209,7 @@ function getTracks() {
     return new Promise(function (resolve, reject) {
         getPlaylist()
             .then(function (result) {
-                if (isExpired(result.expiration)) { // If expired, get new tracks from api
+                if (result.prev_playlist === null || isExpired(result.expiration) || result.prev_playlist.id !== result.id) { // If expired, get new tracks from api
                     setTracks()
                         .then(function (result) {
                             resolve(result);
@@ -223,6 +238,7 @@ function getTracks() {
     });
 }
 
+// ========== [ API ] ==========
 let api = {
     getAuthCode: function () {
         return new Promise(function (resolve, reject) {

@@ -1,48 +1,39 @@
+// ========== [ Globals ] ==========
+let cover_art = $('#cover_art');
+let song_name = $('#song_name');
+let preview = null;
+
 $(document).ready(function() {
-    // displayCoverArt();
+    displayCoverArt();
 });
 
+// ========== [ Message Passing ] ==========
+function msg(action, responseCallback) {
+    chrome.runtime.sendMessage((typeof action === 'string') ? {action: action} : action, responseCallback ? responseCallback: undefined);
+}
+
+// ========== [ Functions ] ==========
 function displayCoverArt() {
-    checkRefresh()
-        .then(function(result){
-            console.log('Result', result)
-        }, function(err){
-            console.log('Error', err);
-            if (err === 'Refresh Required') {
-                api_getTracks()
-                    .then(function(result){
-                        console.log('Result', result)
-                    }, function(err){
-                        console.log('Error', err)
-                    })
-            } else {
-                // Set Refresh in a week
-                let refreshDate = moment().add(7, 'd');
-                setRefresh(refreshDate);
-                console.log('Refresh not found, set to ' + refreshDate.format("dddd, MMMM Do YYYY, h:mm:ss a"))
-            }
-        })
-}
-
-function checkRefresh() {
-    return new Promise(function (resolve, reject) {
-        let key = 'refresh';
-        chrome.storage.sync.get([key], result => {
-            if (key in result) {
-                if (result[key] > moment().valueOf()) {
-                    resolve('Refresh is set to ' + moment(result[key]).format("dddd, MMMM Do YYYY, h:mm:ss a"));
+    msg('getTracks', function (response) {
+        if (!('error' in response)) {
+            let tracks = response;
+            let track = tracks[Math.floor(Math.random()*tracks.length)];
+            song_name.text(track.name);
+            song_name.attr('href', 'https://open.spotify.com/track/' + track.id);
+            let art = track.album.images[0].url;
+            cover_art.css('background-image', 'url('+ art +')');
+            cover_art.click(function () {
+                if (preview === null) {
+                    preview = new Audio(track.preview_url);
+                    preview.volume = 0.2;
+                    preview.play();
                 } else {
-                    reject('Refresh Required');
+                    preview.pause();
+                    preview = null;
                 }
-            } else {
-                reject('Refresh not found')
-            }
-        });
-    });
-}
-
-function setRefresh(refreshDate) {
-    chrome.storage.sync.set({refresh: refreshDate.valueOf()}, function() {
-        console.log('Refresh is set to ' + refreshDate.format("dddd, MMMM Do YYYY, h:mm:ss a"));
+            })
+        } else {
+            cover_art.css('background-color', '#616467');
+        }
     });
 }
