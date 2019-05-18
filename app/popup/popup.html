@@ -17,24 +17,22 @@
 <body>
     <div class="content" style="width:340px">
         <div style="margin: 20px;">
-            <div id="login_info" href="" style="display: none;">
+            <div id="login_info" class="hidden">
                 <div class="row valign-wrapper">
                     <div class="col s4">
                         <img id="avatar" class="circle responsive-img">
                     </div>
                     <div class="col s8">
-                        <div id="user_name" class="name">Christian Overton</div>
-                        <div id="user_email" class="email">christianoverton@ctoverton.com</div>
+                        <div id="user_name" class="name"></div>
+                        <div id="user_email" class="email"></div>
                     </div>
                 </div>
             </div>
             <div class="center">
-                <div id="playlist_name" class="name"></div>
+                <div id="playlist_name" class="name">No Playlist Selected</div>
                 <div id="select_btn" class="bttn bttn-default">Select Playlist</div>
-                <div id="auth_btn" class="bttn bttn-spotify" style="display: none;">Authorize Spotify</div>
-<!--                <div id="test_btn" class="bttn bttn-default">Testing</div>-->
-
-                <ul id="playlist_list" style="display: none;"></ul>
+                <div id="auth_btn" class="bttn bttn-spotify hidden">Authorize Spotify</div>
+                <ul id="playlist_list" class="hidden"></ul>
             </div>
         </div>
     </div>

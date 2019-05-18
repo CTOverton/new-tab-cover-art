@@ -1,12 +1,15 @@
 let spotifyApi = {
     client_id: '7c5e232cdb464da0913baf19042cf106',
     client_secret: '0e1ce17da01b4034a92cab1ef28a8bdc',
-    scopes: 'playlist-read-private, playlist-read-collaborative',
+    scopes: 'playlist-read-private, playlist-read-collaborative, user-read-email',
 };
 
 // ========== [ Message Passing ] ==========
 chrome.runtime.onMessage.addListener(
     function (request, sender, sendResponse) {
+        if (request.action === 'setLogin') {
+            setLogin(request.params);
+        }
         if (request.action === 'getLogin') {
             getLogin()
                 .then(function (result) {
@@ -18,9 +21,6 @@ chrome.runtime.onMessage.addListener(
         }
         if (request.action === 'launchAuthFlow') {
             launchAuthFlow();
-        }
-        if (request.action === 'setLogin') {
-            setLogin(request.params);
         }
         if (request.action === 'setPlaylist') {
             setPlaylist(request.params.id, request.params.name);
@@ -83,7 +83,8 @@ function setLoginInfo() {
                     Object.assign(login, result); // Merges user info into login object
                     chrome.storage.sync.set({login: login}, function () {
                         console.log('Login set to: ', login);
-                        chrome.runtime.sendMessage({action: 'displayCurrentUser'});
+                        chrome.runtime.sendMessage({action: 'updateLoginInfo'});
+                        chrome.runtime.sendMessage({action: 'main_view'});
                         //chrome.browserAction.setIcon(object details, function callback)
                         //https://developer.chrome.com/extensions/browserAction
                     });
@@ -448,9 +449,12 @@ let api = {
 
                     $.ajax(settings)
                         .done(function (response) {
-                            console.log('Refresh successful');
-                            setLogin(response);
-                            resolve(response);
+                            let auth = Object.assign(response, {
+                                refresh_token: refresh_token
+                            });
+                            console.log('Refresh successful', auth);
+                            setLogin(auth);
+                            resolve(auth);
                         })
                         .fail(function (err) {
                             reject({error: err, msg: 'Refresh Failed'});

@@ -11,6 +11,10 @@ body {
     cursor: pointer;
 }
 
+.hidden {
+    display: none;
+}
+
 /*.name {*/
 /*    font-size: 14px;*/
 /*    line-height: 1;*/

@@ -4,6 +4,7 @@
   "name": "Spotify Discovery Theme",
   "version": "0.1.0",
   "description": "New tab displays cover art",
+  "key": "mhafhiadniijileakpnkaomehkdonkfa",
 
   "chrome_url_overrides" : {
     "newtab": "newtab/newtab.html"
