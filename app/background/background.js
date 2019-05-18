@@ -85,8 +85,6 @@ function setLoginInfo() {
                         console.log('Login set to: ', login);
                         chrome.runtime.sendMessage({action: 'updateLoginInfo'});
                         chrome.runtime.sendMessage({action: 'main_view'});
-                        //chrome.browserAction.setIcon(object details, function callback)
-                        //https://developer.chrome.com/extensions/browserAction
                     });
                 }, function (err) {
                     console.log(err);
@@ -221,6 +219,16 @@ function setPlaylist(id, name) {
 
             chrome.storage.sync.set({playlist: playlist}, function () {
                 console.log(playlist);
+                chrome.browserAction.setIcon({
+                    path: {
+                        "16": "../assets/icons/active/icon_active_16.png",
+                        "32": "../assets/icons/active/icon_active_32.png",
+                        "48": "../assets/icons/active/icon_active_48.png",
+                        "64": "../assets/icons/active/icon_active_64.png",
+                        "96": "../assets/icons/active/icon_active_96.png",
+                        "128": "../assets/icons/active/icon_active_128.png"
+                    }
+                });
             });
         }, function (err) {
             let playlist = {
@@ -233,6 +241,16 @@ function setPlaylist(id, name) {
 
             chrome.storage.sync.set({playlist: playlist}, function () {
                 console.log(playlist);
+                chrome.browserAction.setIcon({
+                    path: {
+                        "16": "../assets/icons/active/icon_active_16.png",
+                        "32": "../assets/icons/active/icon_active_32.png",
+                        "48": "../assets/icons/active/icon_active_48.png",
+                        "64": "../assets/icons/active/icon_active_64.png",
+                        "96": "../assets/icons/active/icon_active_96.png",
+                        "128": "../assets/icons/active/icon_active_128.png"
+                    }
+                });
             });
         });
 }

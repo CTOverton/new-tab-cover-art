@@ -173,9 +173,22 @@ function logout() {
     login_info.hide();
     playlist_name.hide();
     select_btn.hide();
+    avatar.attr('src', '');
+    user_name.text('');
+    user_email.text('');
+    login_info.attr('href', '');
+    updatePlaylistName();
     chrome.storage.sync.clear();
-    //chrome.browserAction.setIcon(object details, function callback)
-    //https://developer.chrome.com/extensions/browserAction
+    chrome.browserAction.setIcon({
+        path: {
+            "16": "../assets/icons/default/icon_default_16.png",
+            "32": "../assets/icons/default/icon_default_32.png",
+            "48": "../assets/icons/default/icon_default_48.png",
+            "64": "../assets/icons/default/icon_default_64.png",
+            "96": "../assets/icons/default/icon_default_96.png",
+            "128": "../assets/icons/default/icon_default_128.png"
+        }
+    });
     setAuthBtn('login');
 }
 
@@ -266,6 +279,16 @@ function updatePlaylistName() {
             } else {
                 console.log('error', response);
                 playlist_name.text('No Playlist Selected');
+                chrome.browserAction.setIcon({
+                    path: {
+                        "16": "../assets/icons/default/icon_default_16.png",
+                        "32": "../assets/icons/default/icon_default_32.png",
+                        "48": "../assets/icons/default/icon_default_48.png",
+                        "64": "../assets/icons/default/icon_default_64.png",
+                        "96": "../assets/icons/default/icon_default_96.png",
+                        "128": "../assets/icons/default/icon_default_128.png"
+                    }
+                });
             }
         });
     } else {

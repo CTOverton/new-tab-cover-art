@@ -10,6 +10,15 @@
     "newtab": "newtab/newtab.html"
   },
 
+  "icons": {
+    "16": "assets/icons/active/icon_active_16.png",
+    "32": "assets/icons/active/icon_active_32.png",
+    "48": "assets/icons/active/icon_active_48.png",
+    "64": "assets/icons/active/icon_active_64.png",
+    "96": "assets/icons/active/icon_active_96.png",
+    "128": "assets/icons/active/icon_active_128.png"
+  },
+
   "permissions": [
     "identity",
     "tabs",
