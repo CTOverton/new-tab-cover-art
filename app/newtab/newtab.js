@@ -30,6 +30,7 @@ function displayCoverArt() {
                 if (preview === null) {
                     preview = new Audio(track.preview_url);
                     preview.volume = 0.1;
+                    preview.crossOrigin = "anonymous";
                     preview.play();
                 } else {
                     preview.pause();

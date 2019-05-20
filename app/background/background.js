@@ -561,9 +561,8 @@ let api = {
                                 reject(err);
                             })
                     } else {
-                        resolve(result.items);
+                        resolve(tracks);
                     }
-                    resolve(result.items);
                 }, function (err) {
                     reject(err);
                 });

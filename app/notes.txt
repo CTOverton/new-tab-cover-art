@@ -7,10 +7,12 @@
 
 ========== [ Bugs ] ==========
 - User has no display name or email or avatar img
-
+- chrome local storage is exceeded
 
 ========== [ Fixed ] ==========
 - Token refresh works
+- Playlist has more than 100 songs
+
 
 
 ===================================================
