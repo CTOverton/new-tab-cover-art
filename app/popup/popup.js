@@ -11,7 +11,8 @@ test_btn.click(function () {
     //     console.log(result);
     // })
 
-    let login = {
+    // Test login auth
+  /*  let login = {
         "auth": {
             "access_token": "BQA5QenQyYaC3CCpIGYXx8UQZMC2nnPShLgXevxqC9QFVo",
             "expiration": 0,
@@ -45,7 +46,11 @@ test_btn.click(function () {
     chrome.storage.sync.set({login: login}, function () {
         console.log('Test Login set to: ', login);
         chrome.runtime.sendMessage({action: 'updateLoginInfo'});
-    });
+    });*/
+
+    chrome.storage.local.getBytesInUse('tracks', function (result) {
+        console.log('Bytes in use: ', result, ' %', result / 5242880);
+    })
 
 });
 
@@ -53,8 +58,12 @@ test_btn.click(function () {
 
 
 // ========== [ Globals ] ==========
-let auth_btn = $('#auth_btn');
 let select_btn = $('#select_btn');
+let auth_btn = $('#auth_btn');
+let settings_btn = $('#settings_btn');
+let support_btn = $('#support_btn');
+
+let btns = $('#btns');
 
 let login_info = $('#login_info');
 let avatar = $('#avatar');
@@ -63,6 +72,7 @@ let user_email = $('#user_email');
 
 let playlist_name = $('#playlist_name');
 let playlist_list = $('#playlist_list');
+
 let selectMode = false;
 
 let selected_playlist = {
@@ -78,6 +88,9 @@ $(document).ready(function() {
             login_info.show();
             playlist_name.show();
             select_btn.show();
+            settings_btn.show();
+            support_btn.show();
+            btns.show();
         }, function (err) {
             console.log(err);
             logout();
@@ -97,6 +110,16 @@ auth_btn.click(function (e) {
 
 select_btn.click(function () {
     toggleSelectMode();
+});
+
+settings_btn.click(function () {
+    chrome.tabs.create({url: '/options/options.html'});
+    return false;
+});
+
+support_btn.click(function () {
+    chrome.tabs.create({url: 'https://www.ctoverton.com/'});
+    return false;
 });
 
 login_info.click(function () {
@@ -173,6 +196,8 @@ function logout() {
     login_info.hide();
     playlist_name.hide();
     select_btn.hide();
+    settings_btn.hide();
+    support_btn.hide();
     avatar.attr('src', '');
     user_name.text('');
     user_email.text('');
@@ -215,11 +240,9 @@ function toggleSelectMode() {
             msg({action: 'setPlaylist', params: {id: selected_playlist.id, name: selected_playlist.name}});
         }
         playlist_list.slideUp();
-        login_info.slideDown();
-        auth_btn.slideDown();
+        btns.slideDown();
     } else { // If not visible, show
-        login_info.slideUp();
-        auth_btn.slideUp();
+        btns.slideUp();
         playlist_list.empty();
         msg('api/getUserPlaylists', function (response) {
             console.log('response', response);
@@ -240,17 +263,11 @@ function toggleSelectMode() {
                             id: $(e.target).data('id')
                         };
                     });
-                    li.dblclick(function (e) {
-                        updatePlaylistName();
-                        msg({action: 'setPlaylist', params: {id: selected_playlist.id, name: selected_playlist.name}});
-                        playlist_list.hide();
-                        login_info.show();
-                        auth_btn.show();
-                    });
+                    li.dblclick(toggleSelectMode);
 
                     playlist_list.append(li);
                 });
-                playlist_list.show();
+                playlist_list.slideDown();
             } else {
                 console.log('error: no items in response: ', response)
             }
@@ -260,11 +277,14 @@ function toggleSelectMode() {
 }
 
 function main_view() {
+    select_btn.slideDown();
     login_info.slideDown();
     auth_btn.slideDown();
-    select_btn.slideDown();
+    settings_btn.slideDown();
+    support_btn.slideDown();
     playlist_name.slideDown();
     playlist_list.slideUp();
+    btns.slideDown();
 }
 
 function updatePlaylistName() {

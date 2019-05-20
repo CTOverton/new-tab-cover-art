@@ -40,5 +40,7 @@
 
   "background": {
     "page": "background/background.html"
-  }
+  },
+
+  "options_page": "options/options.html"
 }

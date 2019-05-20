@@ -137,8 +137,8 @@ function setTracks() {
                     .then(function (result) {
                         let tracks = [];
 
-                        for (let i = 0; i < result.items.length; i++) {
-                            let track = result.items[i].track;
+                        for (let i = 0; i < result.length; i++) {
+                            let track = result[i].track;
                             // strip down tracks to lower data size (take just the necessary values)
                             tracks.push({
                                 album: {
@@ -531,13 +531,12 @@ let api = {
                 });
         });
     },
-    getPlaylistTracks: function (id) {
-        // TODO: If playlist tracks are > 100 (aka response.next != null, get next 100 tracks
+    getPlaylistTracks: function (id, prev_tracks, offset, failsafe) {
         return new Promise(function (resolve, reject) {
             let settings = {
                 "async": true,
                 "crossDomain": true,
-                "url": "https://api.spotify.com/v1/playlists/" + id + "/tracks?market=ES",
+                "url": "https://api.spotify.com/v1/playlists/" + id + "/tracks?market=ES" + (offset ? '&offset=' + offset : ''),
                 "method": "GET",
                 "headers": {
                     // "Authorization": "Bearer " + result.auth.access_token,
@@ -547,7 +546,24 @@ let api = {
 
             api.call(settings)
                 .then(function (result) {
-                    resolve(result);
+                    let tracks = result.items;
+                    if (prev_tracks) {tracks = prev_tracks.concat(tracks);};
+
+                    // Limit amount of recursive calls (failsafe)
+                    let recursiveCount = failsafe ? failsafe++ : 1;
+                    let limit = 25;
+
+                    if (tracks.length < result.total && recursiveCount < limit) {
+                        api.getPlaylistTracks(id, tracks, tracks.length, recursiveCount)
+                            .then(function (result) {
+                                resolve(result);
+                            }, function (err) {
+                                reject(err);
+                            })
+                    } else {
+                        resolve(result.items);
+                    }
+                    resolve(result.items);
                 }, function (err) {
                     reject(err);
                 });
