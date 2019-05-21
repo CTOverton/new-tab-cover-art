@@ -3,9 +3,13 @@ let cover_art = $('#cover_art');
 let song_name = $('#song_name');
 let artist_name = $('#artist_name');
 let preview = null;
+let settings = null;
 
 $(document).ready(function() {
-    displayCoverArt();
+    chrome.storage.sync.get('settings', result => {
+        settings = ('settings' in result) ? result.settings : null;
+        displayCoverArt();
+    });
 });
 
 // ========== [ Message Passing ] ==========
@@ -29,14 +33,20 @@ function displayCoverArt() {
             cover_art.click(function () {
                 if (preview === null) {
                     preview = new Audio(track.preview_url);
-                    preview.volume = 0.1;
+                    preview.volume = settings.preview_volume ? settings.preview_volume / 100: 0.1;
                     preview.crossOrigin = "anonymous";
                     preview.play();
                 } else {
                     preview.pause();
                     preview = null;
                 }
-            })
+            });
+            if (settings !== null && 'autoPlay' in settings && settings.autoPlay === true) {
+                preview = new Audio(track.preview_url);
+                preview.volume = settings.preview_volume ? settings.preview_volume / 100: 0.1;
+                preview.crossOrigin = "anonymous";
+                preview.play();
+            }
         } else {
             cover_art.css('background-color', '#616467');
         }

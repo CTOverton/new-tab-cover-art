@@ -118,7 +118,7 @@ settings_btn.click(function () {
 });
 
 support_btn.click(function () {
-    chrome.tabs.create({url: 'https://www.ctoverton.com/'});
+    chrome.tabs.create({url: 'https://paypal.me/christianoverton'});
     return false;
 });
 

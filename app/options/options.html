@@ -15,8 +15,74 @@
 
 </head>
 <body>
-<div class="container">
-    <div class="valign-wrapper" style="height: 100vh"><h1 class="title center-align">Coming soon...</h1></div>
+<div class="content">
+<!--    <div class="valign-wrapper" style="height: 100vh"><h1 class="title center-align">Coming soon...</h1></div>-->
+    <div id="settings">
+        <div class="row center">
+            <div class="col s12 title">Spotify Discovery Settings</div>
+        </div>
+        <div class="row">
+            <div class="col s6">
+                <div>Auto Play</div>
+            </div>
+            <div class="col s6">
+                <div class="switch right">
+                    <label>
+                        <input id="autoPlay" type="checkbox">
+                        <span class="lever"></span>
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s6">
+                <div>Preview Volume</div>
+            </div>
+            <div class="col s6">
+                <p class="range-field">
+                    <input type="range" id="preview_volume" min="0" max="100" />
+                </p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s6">
+                <div>Dark Mode</div>
+            </div>
+            <div class="col s6">
+                <div class="switch right">
+                    <label>
+                        <input disabled id="darkMode" type="checkbox">
+                        <span class="lever"></span>
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="about">
+        <div class="row center">
+            <div class="col s12 title">About</div>
+        </div>
+        <div class="row">
+            <div class="col s6 center">
+                <img src="../assets/Double Exposure Avatar [Square].png" class="avatar"/>
+            </div>
+            <div class="col s6">
+                <div class="title center">
+                    Christian Overton
+                </div>
+                <div class="bttn bttn-default hover-blue link" href="https://CTOverton.com">CTOverton.com</div>
+                <div class="bttn bttn-default hover-red link" href="https://YouTube.com/CTOverton">YouTube</div>
+                <div class="bttn bttn-default hover-insta link" href="https://Instagram.com/CTOverton.graphics">Instagram</div>
+                <div class="bttn bttn-default link" href="https://GitHub.com/CTOverton">GitHub</div>
+            </div>
+        </div>
+    </div>
+    <div id="contact">
+        <div class="row center">
+            <div class="title">Have an issue / feature request / comment / suggestion?</div>
+            <div class="bttn bttn-default link" href="https://github.com/CTOverton/spotify-chrome-theme/issues">Contact</div>
+        </div>
+    </div>
 </div>
 
 <script src="../libs/jquery-3.3.1.js"></script>
