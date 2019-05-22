@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Spotify Discovery New Tab Options</title>
+    <title>New Tab Cover Art</title>
 
     <!--Import Google Icon Font-->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
@@ -17,27 +17,27 @@
 <body>
     <div class="content" style="width:340px">
         <div style="margin: 20px;">
-            <div id="login_info" class="hidden">
+            <div id="login_info" class="clickable hidden">
                 <div class="row valign-wrapper">
                     <div class="col s4">
                         <img id="avatar" class="circle responsive-img">
                     </div>
                     <div class="col s8">
-                        <div id="user_name" class="name"></div>
-                        <div id="user_email" class="email"></div>
+                        <div id="user_name" class="title"></div>
+                        <div id="user_email" class="subtitle"></div>
                     </div>
                 </div>
             </div>
             <div class="center">
-                <div id="playlist_name" class="name">No Playlist Selected</div>
-                <div id="select_btn" class="bttn bttn-default">Select Playlist</div>
-                <div id="settings_btn" class="bttn bttn-default hidden">Settings</div>
+                <div id="playlist_name" class="title">No Playlist Selected</div>
+                <div id="select_btn" class="bttn">Select Playlist</div>
+                <div id="settings_btn" class="bttn hidden">Settings</div>
                 <div id="auth_btn" class="bttn bttn-spotify hidden">Authorize Spotify</div>
                 <div id="support_btn" class="bttn bttn-blue hidden">Support Me</div>
 
                 <ul id="playlist_list" class="hidden"></ul>
 
-<!--                <div id="test_btn" class="bttn bttn-default">Test</div>-->
+<!--                <div id="test_btn" class="bttn">Test</div>-->
             </div>
         </div>
     </div>

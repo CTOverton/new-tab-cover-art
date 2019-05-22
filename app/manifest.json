@@ -1,9 +1,9 @@
 {
-  "manifest_version": 3,
+  "manifest_version": 2,
 
-  "name": "Spotify Discovery Theme",
+  "name": "New Tab Cover Art",
   "version": "0.1.0",
-  "description": "New tab displays cover art",
+  "description": "New tab displays cover art from your playlist",
   "key": "mhafhiadniijileakpnkaomehkdonkfa",
 
   "chrome_url_overrides" : {
@@ -35,7 +35,7 @@
 
   "browser_action": {
     "default_popup": "popup/popup.html",
-    "default_title": "Spotify Discovery Theme"
+    "default_title": "New Tab Cover Art"
   },
 
   "background": {

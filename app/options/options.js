@@ -3,20 +3,8 @@ $('.link').click(function (e) {
 });
 
 $(document).ready(function() {
-    let inputs = $('#settings').find('input');
-    chrome.storage.sync.get('settings', result => {
-        if ('settings' in result) {
-            let settings = result.settings;
-            inputs.each(function (index, element) {
-                let input = $(element);
-                let key = input.attr('id');
-                if (key in settings) {
-                    if (input.attr('type') === 'checkbox') { input.prop('checked', settings[key]) }
-                    if (input.attr('type') === 'range') { input.val(settings[key]) }
-                }
-            })
-        }
-    });
+    getSettings();
+    checkDarkMode();
 });
 
 
@@ -31,8 +19,76 @@ $('#settings').find('input').change(function (e) {
         settings[key] = value;
         chrome.storage.sync.set({settings: settings}, function () {
             console.log(key + ' set to', value);
+            checkDarkMode();
         });
     });
 });
+
+function getSettings() {
+    let inputs = $('#settings').find('input');
+    chrome.storage.sync.get('settings', result => {
+        if ('settings' in result) {
+            let settings = result.settings;
+            inputs.each(function (index, element) {
+                let input = $(element);
+                let key = input.attr('id');
+                if (key in settings) {
+                    if (input.attr('type') === 'checkbox') { input.prop('checked', settings[key]) }
+                    if (input.attr('type') === 'range') { input.val(settings[key]) }
+                }
+            })
+        }
+    });
+}
+
+function checkDarkMode() {
+    const body = document.querySelector('body');
+    const lightMode = {
+        '--text-color': '#777a7d',
+        '--title-color': '#616467',
+        '--bold-title-color': '#777a7d',
+        '--subtitle-color': '#777a7d',
+
+        '--bttn-color': '#616467',
+        '--bttn-text-color': '#fff',
+
+        '--background-color': '#fff'
+    };
+
+    const darkMode = {
+        '--text-color': '#fff',
+        '--title-color': '#fff',
+        '--bold-title-color': '#fff',
+        '--subtitle-color': '#e6e6e6',
+
+        '--bttn-color': '#fff',
+        '--bttn-text-color': '#191414',
+
+        '--background-color': '#191414'
+    };
+
+    function setMode(mode) {
+        for (let key in mode) {
+            body.style.setProperty(key, mode[key]);
+        }
+    }
+
+    chrome.storage.sync.get('settings', result => {
+        if ('settings' in result) {
+            let settings = result.settings;
+            if ('darkMode' in settings) {
+                if (settings.darkMode === true) {
+                    setMode(darkMode);
+                } else {
+                    setMode(lightMode);
+                }
+            } else {
+                setMode(lightMode);
+            }
+        }
+    });
+
+
+}
 
 

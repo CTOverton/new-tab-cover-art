@@ -1,13 +1,35 @@
 body {
-    /*background: #121212;*/
+    /*Variables*/
+    --text-color: #616467;
+    --title-color: #616467;
+    --bold-title-color: #777a7d;
+    --subtitle-color: #777a7d;
+
+    --bttn-color: #616467;
+    --bttn-text-color: #fff;
+
+    --background-color: #fff;
+
+    /*Dark Mode*/
+    /*--text-color: #ffffff;
+    --title-color: #ffffff;
+    --bold-title-color: #fff;
+    --subtitle-color: #e6e6e6;
+
+    --bttn-color: #fff;
+    --bttn-text-color: #191414;
+    --background-color: #191414;*/
+
+    /*Global Defaults*/
     font-family: Circular,Helvetica,Arial,sans-serif;
     font-size: 14px;
     line-height: 1;
     font-weight: 700;
-    color: #616467;
+    color: var(--text-color);
+    background: var(--background-color);
 }
 
-#login_info {
+.clickable {
     cursor: pointer;
 }
 
@@ -15,78 +37,88 @@ body {
     display: none;
 }
 
-/*.name {*/
-/*    font-size: 14px;*/
-/*    line-height: 1;*/
-/*    font-weight: 700;*/
-/*    color: #616467;*/
-/*}*/
+.title {
+    font-family: Circular,Helvetica,Arial,sans-serif;
+    font-size: 14px;
+    line-height: 1;
+    font-weight: 700;
+    color: var(--title-color);
+}
 
-.email {
+.bold-title {
+    font-family: spotify-circular,spotify-circular-cyrillic,spotify-circular-arabic,spotify-circular-hebrew,Helvetica Neue,Helvetica,Arial,Hiragino Kaku Gothic Pro,Meiryo,MS Gothic,sans-serif;;
+    font-size: 3vh;
+    font-weight: 600;
+    /*line-height: 50px;*/
+    letter-spacing: -.005em;
+    text-decoration: none;
+    color: var(--bold-title-color);
+}
+
+.subtitle {
     font-size: 12px;
     line-height: 2;
     font-weight: 700;
-    color: #777a7d;
+    color: var(--subtitle-color);
 }
 
 .bttn {
-    /*btn-block*/
-    /*display: block;*/
     width: 100%;
-
-    /*btn*/
-    font-size: 14px;
-    line-height: 1;
-    border-radius: 500px;
+    min-width: 160px;
+    margin: 10px 0;
     padding: 12px 48px 14px;
+
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: 2px;
+
+    text-transform: uppercase;
+    text-align: center;
+    text-decoration: none;
+    white-space: normal;
+    vertical-align: middle;
+
     transition-property: background-color,border-color,color,box-shadow,filter, display;
     transition-duration: .3s;
-    border-width: 0;
-    letter-spacing: 2px;
-    min-width: 160px;
-    text-transform: uppercase;
-    white-space: normal;
 
-    margin: 10px 0;
-    font-weight: 700;
-    text-align: center;
-    vertical-align: middle;
     touch-action: manipulation;
     cursor: pointer;
-    background-image: none;
-    border: 1px solid transparent;
-
     user-select: none;
 
-    text-decoration: none;
-}
+    background-image: none;
+    border: 1px solid transparent;
+    border-radius: 500px;
 
-.bttn-default {
-    color: #616467;
-    box-shadow: inset 0 0 0 2px #616467;
+    color: var(--bttn-color);
+    box-shadow: inset 0 0 0 2px var(--bttn-color);
     background-color: transparent;
 }
 
-.bttn-default:hover {
-    color: #fff;
-    background-color: #616467;
+.bttn:hover {
+    color: var(--bttn-text-color);
+    background-color: var(--bttn-color);
 }
 
 .bttn-spotify {
     color: #fff;
+    box-shadow: none;
     background: #1db954;
 }
 
 .bttn-spotify:hover {
+    color: #fff;
     background: #1ed760;
 }
 
 .bttn-blue {
     color: #fff;
+    box-shadow: none;
     background: #3367d6;
 }
 
 .bttn-blue:hover {
+    color: #fff;
     background: #4b91ff;
 }
 
@@ -109,8 +141,8 @@ li {
 }
 
 li:hover {
-    background: #616467;
-    color: #fff;
+    background: var(--bttn-color);
+    color: var(--bttn-text-color);
 }
 
 li.selected {
@@ -134,26 +166,3 @@ ul::-webkit-scrollbar-thumb {
     background: rgba(0,0,0,0.6);
     border-radius: 10px;
 }
-
-
-/*.collection {
-    margin: 0.5rem 0 1rem 0;
-    border: 1px solid #e0e0e0;
-    border-radius: 2px;
-    overflow: hidden;
-    position: relative;
-}*/
-
-/*.collection .collection-item {
-    background-color: #fff;
-    line-height: 1.5rem;
-    padding: 10px 20px;
-    margin: 0;
-    border-bottom: 1px solid #e0e0e0;
-}*/
-
-/*
-.secondary-content {
-    float: right;
-    color: #26a69a;
-}*/

@@ -1,23 +1,65 @@
 body {
+    /*Variables*/
+    --text-color: #616467;
+    --title-color: #616467;
+    --bold-title-color: #777a7d;
+    --subtitle-color: #777a7d;
+
+    --bttn-color: #616467;
+    --bttn-text-color: #fff;
+
+    --background-color: #fff;
+
+    /*Dark Mode*/
+    /*--text-color: #ffffff;
+    --title-color: #ffffff;
+    --bold-title-color: #fff;
+    --subtitle-color: #e6e6e6;
+
+    --bttn-color: #fff;
+    --bttn-text-color: #191414;
+    --background-color: #191414;*/
+
+    /*Global Defaults*/
     font-family: Circular,Helvetica,Arial,sans-serif;
     font-size: 14px;
     line-height: 1;
     font-weight: 700;
-    color: #616467;
-    /*color: #fff;*/
-    /*background: #232323;*/
+    color: var(--text-color);
+    background: var(--background-color);
+}
+
+.clickable {
+    cursor: pointer;
+}
+
+.hidden {
+    display: none;
 }
 
 .title {
+    font-family: Circular,Helvetica,Arial,sans-serif;
+    font-size: 14px;
+    line-height: 1;
+    font-weight: 700;
+    color: var(--title-color);
+}
+
+.subtitle {
+    font-size: 12px;
+    line-height: 2;
+    font-weight: 700;
+    color: var(--subtitle-color);
+}
+
+.bold-title {
     font-family: spotify-circular,spotify-circular-cyrillic,spotify-circular-arabic,spotify-circular-hebrew,Helvetica Neue,Helvetica,Arial,Hiragino Kaku Gothic Pro,Meiryo,MS Gothic,sans-serif;;
     font-size: 3vh;
     font-weight: 600;
     /*line-height: 50px;*/
     letter-spacing: -.005em;
     text-decoration: none;
-    cursor: pointer;
-    color: #616467;
-    /*color: #fff;*/
+    color: var(--bold-title-color);
 }
 
 .content {
@@ -36,7 +78,6 @@ body {
     -moz-box-shadow: 0 0 10px rgba(0,0,0,.3);
     box-shadow: 0 0 10px rgba(0,0,0,.3);
     border: 0;
-    /*background: center / contain no-repeat url("../assets/test_album.jpg");*/
 }
 
 #song_name {
@@ -48,13 +89,4 @@ body {
     position: absolute;
     bottom: -4vh;
     right: 0;
-}
-
-#visualizer {
-    z-index: -1;
-    position: fixed;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
 }

@@ -10,6 +10,7 @@ $(document).ready(function() {
         settings = ('settings' in result) ? result.settings : null;
         displayCoverArt();
     });
+    checkDarkMode();
 });
 
 // ========== [ Message Passing ] ==========
@@ -120,4 +121,54 @@ function displayCoverArt() {
             cover_art.css('background-color', '#616467');
         }
     });
+}
+
+function checkDarkMode() {
+    const body = document.querySelector('body');
+    const lightMode = {
+        '--text-color': '#777a7d',
+        '--title-color': '#616467',
+        '--bold-title-color': '#777a7d',
+        '--subtitle-color': '#777a7d',
+
+        '--bttn-color': '#616467',
+        '--bttn-text-color': '#fff',
+
+        '--background-color': '#fff'
+    };
+
+    const darkMode = {
+        '--text-color': '#fff',
+        '--title-color': '#fff',
+        '--bold-title-color': '#fff',
+        '--subtitle-color': '#e6e6e6',
+
+        '--bttn-color': '#fff',
+        '--bttn-text-color': '#191414',
+
+        '--background-color': '#191414'
+    };
+
+    function setMode(mode) {
+        for (let key in mode) {
+            body.style.setProperty(key, mode[key]);
+        }
+    }
+
+    chrome.storage.sync.get('settings', result => {
+        if ('settings' in result) {
+            let settings = result.settings;
+            if ('darkMode' in settings) {
+                if (settings.darkMode === true) {
+                    setMode(darkMode);
+                } else {
+                    setMode(lightMode);
+                }
+            } else {
+                setMode(lightMode);
+            }
+        }
+    });
+
+
 }
