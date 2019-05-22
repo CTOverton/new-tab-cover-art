@@ -1,0 +1,44 @@
+{
+  "manifest_version": 2,
+
+  "name": "New Tab Cover Art",
+  "version": "0.1.1",
+  "description": "New tab displays cover art from your playlist",
+
+  "chrome_url_overrides" : {
+    "newtab": "newtab/newtab.html"
+  },
+
+  "icons": {
+    "16": "assets/icons/active/icon_active_16.png",
+    "32": "assets/icons/active/icon_active_32.png",
+    "48": "assets/icons/active/icon_active_48.png",
+    "64": "assets/icons/active/icon_active_64.png",
+    "96": "assets/icons/active/icon_active_96.png",
+    "128": "assets/icons/active/icon_active_128.png"
+  },
+
+  "permissions": [
+    "identity",
+    "tabs",
+    "webNavigation",
+    "https://*.spotify.com/*",
+    "*://*.google.com/*",
+    "storage"
+  ],
+
+  "web_accessible_resources": [
+    "/oauth2/*"
+  ],
+
+  "browser_action": {
+    "default_popup": "popup/popup.html",
+    "default_title": "New Tab Cover Art"
+  },
+
+  "background": {
+    "page": "background/background.html"
+  },
+
+  "options_page": "options/options.html"
+}

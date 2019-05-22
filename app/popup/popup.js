@@ -157,9 +157,14 @@ function checkLogin() {
 function updateLoginInfo(login) {
     if (login) {
         setAuthBtn('logout');
-        avatar.attr('src', login.images[0].url);
-        user_name.text(login.display_name);
-        user_email.text(login.email);
+        if (login.images.length > 0) {
+            avatar.attr('src', login.images[0].url);
+        } else {
+            avatar.css('background', '#616467');
+        }
+
+        user_name.text(login.display_name ? login.display_name : login.id);
+        user_email.text(login.email ? login.email : '');
         login_info.attr('href', 'https://open.spotify.com/user/' + login.id);
     } else {
         msg('getLogin', function(response) {
@@ -169,9 +174,13 @@ function updateLoginInfo(login) {
             } else {
                 let login = response;
                 setAuthBtn('logout');
-                avatar.attr('src', login.images[0].url);
-                user_name.text(login.display_name);
-                user_email.text(login.email);
+                if (login.images.length > 0) {
+                    avatar.attr('src', login.images[0].url);
+                } else {
+                    avatar.css('background', '#616467');
+                }
+                user_name.text(login.display_name ? login.display_name : login.id);
+                user_email.text(login.email ? login.email : '');
                 login_info.attr('href', 'https://open.spotify.com/user/' + login.id);
             }
         });

@@ -35,8 +35,26 @@ function getSettings() {
                 if (key in settings) {
                     if (input.attr('type') === 'checkbox') { input.prop('checked', settings[key]) }
                     if (input.attr('type') === 'range') { input.val(settings[key]) }
+                } else {
+                    if (key === 'preview_volume') {
+                        chrome.storage.sync.get('settings', result => {
+                            let settings = ('settings' in result) ? result.settings : {};
+                            settings['preview_volume'] = 10;
+                            chrome.storage.sync.set({settings: settings}, function () {
+                                input.val(settings[key]);
+                                console.log('preview_volume set to', 10);
+                            });
+                        });
+                    }
                 }
             })
+        } else {
+            let settings = {};
+            settings['preview_volume'] = 10;
+            chrome.storage.sync.set({settings: settings}, function () {
+                $('#preview_volume').val(settings['preview_volume']);
+                console.log('preview_volume set to', 10);
+            });
         }
     });
 }

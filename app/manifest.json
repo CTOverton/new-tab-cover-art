@@ -2,7 +2,7 @@
   "manifest_version": 2,
 
   "name": "New Tab Cover Art",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "New tab displays cover art from your playlist",
   "key": "mhafhiadniijileakpnkaomehkdonkfa",
 
@@ -25,8 +25,7 @@
     "webNavigation",
     "https://*.spotify.com/*",
     "*://*.google.com/*",
-    "storage",
-    "alarms"
+    "storage"
   ],
 
   "web_accessible_resources": [

@@ -1,0 +1,8 @@
+1. Download app.zip
+2. unzip in a folder you will remember
+3. go to "chrome://extensions" in your chrome browser
+4. Click "Developer mode" (top right) to on
+5. Click "Load unpacked" and find the folder you unzipped, ex: C:\Users\overt\Downloads\app
+6. Once loaded you must send me the ID under the extension so I can grant you access.
+
+Then just click the extension icon in the top right and login to spotify!

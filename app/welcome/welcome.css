@@ -13,6 +13,13 @@ h3 {
     font-weight: 700;
 }
 
+.subtitle {
+    font-size: 16px;
+    line-height: 2;
+    font-weight: 700;
+    color: #777a7d;
+}
+
 .bttn {
     /*btn-block*/
     /*display: block;*/
