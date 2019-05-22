@@ -1,8 +1,14 @@
+// ========== [ Globals ] ==========
 let spotifyApi = {
     client_id: '7c5e232cdb464da0913baf19042cf106',
     client_secret: '0e1ce17da01b4034a92cab1ef28a8bdc',
     scopes: 'playlist-read-private, playlist-read-collaborative, user-read-email',
 };
+
+// ========== [ Events ] ==========
+chrome.runtime.onInstalled.addListener(function () {
+    chrome.tabs.create({url: "../welcome/welcome.html"});
+});
 
 // ========== [ Message Passing ] ==========
 chrome.runtime.onMessage.addListener(

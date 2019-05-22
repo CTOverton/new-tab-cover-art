@@ -76,7 +76,18 @@ function displayCoverArt() {
             cover_art.click(function () {
                 if (preview === null) {
                     preview = new Audio(track.preview_url);
-                    preview.volume = settings.preview_volume ? settings.preview_volume / 100: 0.1;
+                    if (settings !== null && 'preview_volume' in settings) {
+                        preview.volume = settings.preview_volume / 100;
+                    } else {
+                        preview.volume = 0.1;
+                        chrome.storage.sync.get('settings', result => {
+                            let settings = ('settings' in result) ? result.settings : {};
+                            settings['preview_volume'] = 10;
+                            chrome.storage.sync.set({settings: settings}, function () {
+                                console.log('preview_volume set to', 10);
+                            });
+                        });
+                    }
                     preview.crossOrigin = "anonymous";
                     preview.play();
                     control_play.hide();
@@ -90,7 +101,18 @@ function displayCoverArt() {
             });
             if (settings !== null && 'autoPlay' in settings && settings.autoPlay === true) {
                 preview = new Audio(track.preview_url);
-                preview.volume = settings.preview_volume ? settings.preview_volume / 100: 0.1;
+                if (settings !== null && 'preview_volume' in settings) {
+                    preview.volume = settings.preview_volume / 100;
+                } else {
+                    preview.volume = 0.1;
+                    chrome.storage.sync.get('settings', result => {
+                        let settings = ('settings' in result) ? result.settings : {};
+                        settings['preview_volume'] = 10;
+                        chrome.storage.sync.set({settings: settings}, function () {
+                            console.log('preview_volume set to', 10);
+                        });
+                    });
+                }
                 preview.crossOrigin = "anonymous";
                 preview.play();
             }

@@ -63,8 +63,6 @@ let auth_btn = $('#auth_btn');
 let settings_btn = $('#settings_btn');
 let support_btn = $('#support_btn');
 
-let btns = $('#btns');
-
 let login_info = $('#login_info');
 let avatar = $('#avatar');
 let user_name = $('#user_name');
@@ -90,7 +88,6 @@ $(document).ready(function() {
             select_btn.show();
             settings_btn.show();
             support_btn.show();
-            btns.show();
         }, function (err) {
             console.log(err);
             logout();
@@ -127,10 +124,6 @@ login_info.click(function () {
     return false;
 });
 
-// more_btn.click(function () {
-//     more.slideToggle();
-// });
-
 // ========== [ Message Passing ] ==========
 chrome.runtime.onMessage.addListener(
     function (request, sender, sendResponse) {
@@ -138,7 +131,7 @@ chrome.runtime.onMessage.addListener(
             updateLoginInfo();
         }
         if (request.action === 'main_view') {
-            main_view();
+            if (!selectMode) {main_view();}
         }
 
         return true;
@@ -239,11 +232,10 @@ function toggleSelectMode() {
             updatePlaylistName();
             msg({action: 'setPlaylist', params: {id: selected_playlist.id, name: selected_playlist.name}});
         }
-        playlist_list.slideUp();
-        btns.slideDown();
+        main_view();
     } else { // If not visible, show
-        btns.slideUp();
         playlist_list.empty();
+        select_view();
         msg('api/getUserPlaylists', function (response) {
             console.log('response', response);
             let playlists = response.items;
@@ -284,7 +276,14 @@ function main_view() {
     support_btn.slideDown();
     playlist_name.slideDown();
     playlist_list.slideUp();
-    btns.slideDown();
+}
+
+function select_view() {
+    login_info.slideUp();
+    auth_btn.slideUp();
+    settings_btn.slideUp();
+    support_btn.slideUp();
+    playlist_name.slideDown();
 }
 
 function updatePlaylistName() {
