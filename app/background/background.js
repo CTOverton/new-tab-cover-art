@@ -179,6 +179,7 @@ function getTracks() {
                 if (result.init === false || isExpired(result.expiration)) { // Get new tracks from api
                     console.log('Getting tracks from Spotify Api');
                     Object.assign(result, {
+                        expiration: moment().add(1, 'w').valueOf(), // Set to expire in 1 week
                         init: true
                     });
                     chrome.storage.sync.set({playlist: result});

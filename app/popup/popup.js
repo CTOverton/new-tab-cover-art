@@ -48,8 +48,12 @@ test_btn.click(function () {
         chrome.runtime.sendMessage({action: 'updateLoginInfo'});
     });*/
 
-    chrome.storage.local.getBytesInUse('tracks', function (result) {
+    /*chrome.storage.local.getBytesInUse('tracks', function (result) {
         console.log('Bytes in use: ', result, ' %', result / 5242880);
+    })*/
+
+    chrome.storage.sync.get('playlist', function (result) {
+        console.log(result);
     })
 
 });
